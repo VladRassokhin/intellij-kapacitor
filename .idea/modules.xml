@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-kapacitor.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-kapacitor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-kapacitor_main.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-kapacitor_main.iml" group="intellij-kapacitor" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-kapacitor_test.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-kapacitor_test.iml" group="intellij-kapacitor" />
+    </modules>
+  </component>
+</project>
