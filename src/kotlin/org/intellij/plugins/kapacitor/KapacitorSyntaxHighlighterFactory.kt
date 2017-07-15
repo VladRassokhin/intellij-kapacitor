@@ -36,9 +36,11 @@ open class KapacitorSyntaxHighlighterFactory : SyntaxHighlighterFactory() {
     val Kapacitor_BRACKETS: TextAttributesKey = TextAttributesKey.createTextAttributesKey("Kapacitor.BRACKETS", BRACKETS)
     val Kapacitor_PARENTHESES: TextAttributesKey = TextAttributesKey.createTextAttributesKey("Kapacitor.PARENTHESES", PARENTHESES)
     val Kapacitor_COMMA: TextAttributesKey = TextAttributesKey.createTextAttributesKey("Kapacitor.COMMA", COMMA)
+    val Kapacitor_CHAINS: TextAttributesKey = TextAttributesKey.createTextAttributesKey("Kapacitor.CHAINS", DOT)
     val Kapacitor_OPERATION_SIGN: TextAttributesKey = TextAttributesKey.createTextAttributesKey("Kapacitor.OPERATION_SIGN", OPERATION_SIGN)
     val Kapacitor_NUMBER: TextAttributesKey = TextAttributesKey.createTextAttributesKey("Kapacitor.NUMBER", NUMBER)
     val Kapacitor_STRING: TextAttributesKey = TextAttributesKey.createTextAttributesKey("Kapacitor.STRING", STRING)
+    val Kapacitor_REFERENCE: TextAttributesKey = TextAttributesKey.createTextAttributesKey("Kapacitor.REFERENCE", TEMPLATE_LANGUAGE_COLOR)
     val Kapacitor_KEYWORD: TextAttributesKey = TextAttributesKey.createTextAttributesKey("Kapacitor.KEYWORD", KEYWORD)
     val Kapacitor_LINE_COMMENT: TextAttributesKey = TextAttributesKey.createTextAttributesKey("Kapacitor.LINE_COMMENT", LINE_COMMENT)
 
@@ -64,12 +66,16 @@ open class KapacitorSyntaxHighlighterFactory : SyntaxHighlighterFactory() {
       SyntaxHighlighterBase.fillMap(ourAttributes, KapacitorParserDefinition.KEYWORDS, Kapacitor_KEYWORD)
 
       SyntaxHighlighterBase.fillMap(ourAttributes, Kapacitor_COMMA, KapacitorElementTypes.COMMA)
+      SyntaxHighlighterBase.fillMap(ourAttributes, KapacitorParserDefinition.PIPES, Kapacitor_CHAINS)
       SyntaxHighlighterBase.fillMap(ourAttributes, KapacitorTokenTypes.ALL_OPERATORS, Kapacitor_OPERATION_SIGN)
 
       SyntaxHighlighterBase.fillMap(ourAttributes, Kapacitor_NUMBER, KapacitorElementTypes.NUMBER, KapacitorElementTypes.DURATION)
 
       SyntaxHighlighterBase.fillMap(ourAttributes, Kapacitor_STRING, KapacitorElementTypes.SINGLE_QUOTED_STRING)
       SyntaxHighlighterBase.fillMap(ourAttributes, Kapacitor_STRING, KapacitorElementTypes.TRIPLE_QUOTED_STRING)
+      SyntaxHighlighterBase.fillMap(ourAttributes, Kapacitor_STRING, KapacitorElementTypes.REGEX_LITERAL)
+
+      SyntaxHighlighterBase.fillMap(ourAttributes, Kapacitor_REFERENCE, KapacitorElementTypes.REFERENCE_STRING)
 
       SyntaxHighlighterBase.fillMap(ourAttributes, Kapacitor_IDENTIFIER, KapacitorElementTypes.ID)
 

@@ -91,5 +91,6 @@ open class KapacitorParserDefinition : ParserDefinition {
     val LITERALS: TokenSet = TokenSet.orSet(STRING_LITERALS, BOOLEANS, TokenSet.create(NUMBER_LITERAL, DURATION_LITERAL, STAR_LITERAL))
     val VALUES: TokenSet = TokenSet.orSet(/*CONTAINERS,*/ LITERALS)
     val COMMENTARIES: TokenSet = TokenSet.create(/*BLOCK_COMMENT, */LINE_COMMENT)
+    val PIPES: TokenSet = TokenSet.create(DOT, AT, PIPE)
   }
 }

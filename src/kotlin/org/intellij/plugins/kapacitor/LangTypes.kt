@@ -26,6 +26,7 @@ object KapacitorTokenTypes {
   val BINARY_OPERATORS: TokenSet = TokenSet.create(
       OP_PLUS, OP_MINUS, OP_MULT, OP_DIV, OP_MOD,
       OP_EQUAL, OP_NOTEQUAL,
+      OP_REGEXEQUAL, OP_REGEXNOTEQUAL,
       OP_LESS, OP_GREATER, OP_LESSEQUAL, OP_GREATEREQUAL,
       OP_AND, OP_OR
   )
