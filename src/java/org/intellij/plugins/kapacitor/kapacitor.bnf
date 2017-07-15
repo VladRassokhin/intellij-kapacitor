@@ -88,6 +88,7 @@
   ]
 
   extends(".*_literal")=literal
+  extends(".*Expression|identifier|literal")=expression
 }
 
 program ::= statement*
@@ -96,9 +97,10 @@ statement ::= type_declaration | declaration | expression
 type_declaration ::= "var" identifier identifier
 declaration ::= "var" identifier "=" expression
 
-expression ::= function_expr | function chain* | identifier_expr | identifier chain* |  primary_expr | lambda | StringList | primary
+expression ::= function_expr | function chain? | identifier_expr | identifier chain? |  primary_expr | lambda | StringList | primary
 
 chain ::= ("@"|"|"|".") function chain* | ("." identifier chain*)
+{ extends=expression }
 
 private function_expr ::= function operator_literal primary
 { extends=expression }
@@ -115,17 +117,24 @@ private parameter ::= (expression) (','|&')') {
   pin=1
   recoverWhile = not_paren_or_next_parameter
 }
-private primary ::=  "(" primary_expr ")" | literal | PrimaryFunc | identifier | primary_unary_expr
-primary_unary_expr::= "-" primary | "!" primary
+private primary ::=
+  "(" primary_expr ")"
+  | PrimaryFuncExpression
+  | identifier
+  | UnaryExpression
+  | literal
+{ extends=expression }
 
-PrimaryFunc ::= identifier "(" PrimaryParameter* ")"
-// PrimaryParameters inlined
-private PrimaryParameter ::= (primary_expr) (','|&')') {
-  pin=1
-  recoverWhile = not_paren_or_next_primary_parameter
+UnaryExpression::= ("-"|"!") primary
+
+
+PrimaryFuncExpression ::= identifier PrimaryParameterList
+private PrimaryParameterList ::='(' (primary_expr? (',' primary_expr )* )?')' {
+  pin(".*")=1
 }
 StringList ::= '[' StringListItem* ']'  {
   pin=1
+  extends=expression
 }
 // string_list_items inlined
 private StringListItem ::= (string_literal | identifier | star_literal) (','|&']') {
@@ -159,5 +168,4 @@ operator_literal  ::= "+" | "-" | "*" | "/" | "==" | "!=" |
 
 
 private not_paren_or_next_parameter ::= !(')'|(expression))
-private not_paren_or_next_primary_parameter ::= !(')'|(primary_expr))
 private not_bracket_or_next_value ::= !(']'|(string_literal | identifier | star_literal))

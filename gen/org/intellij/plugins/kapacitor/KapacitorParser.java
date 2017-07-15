@@ -23,11 +23,14 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
     boolean r;
     b = adapt_builder_(t, b, this, EXTENDS_SETS_);
     Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-    if (t == PRIMARY_FUNC) {
-      r = PrimaryFunc(b, 0);
+    if (t == PRIMARY_FUNC_EXPRESSION) {
+      r = PrimaryFuncExpression(b, 0);
     }
     else if (t == STRING_LIST) {
       r = StringList(b, 0);
+    }
+    else if (t == UNARY_EXPRESSION) {
+      r = UnaryExpression(b, 0);
     }
     else if (t == BOOLEAN_LITERAL) {
       r = boolean_literal(b, 0);
@@ -65,9 +68,6 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
     else if (t == PRIMARY_EXPR) {
       r = primary_expr(b, 0);
     }
-    else if (t == PRIMARY_UNARY_EXPR) {
-      r = primary_unary_expr(b, 0);
-    }
     else if (t == REFERENCE_LITERAL) {
       r = reference_literal(b, 0);
     }
@@ -97,81 +97,89 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
   }
 
   public static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
-    create_token_set_(EXPRESSION, FUNCTION, LAMBDA, PRIMARY_EXPR),
-    create_token_set_(BOOLEAN_LITERAL, DURATION_LITERAL, LITERAL, NUMBER_LITERAL,
-      OPERATOR_LITERAL, REFERENCE_LITERAL, REGEX_LITERAL, STAR_LITERAL,
-      STRING_LITERAL),
+    create_token_set_(BOOLEAN_LITERAL, CHAIN, DURATION_LITERAL, EXPRESSION,
+      FUNCTION, IDENTIFIER, LAMBDA, LITERAL,
+      NUMBER_LITERAL, OPERATOR_LITERAL, PRIMARY_EXPR, PRIMARY_FUNC_EXPRESSION,
+      REFERENCE_LITERAL, REGEX_LITERAL, STAR_LITERAL, STRING_LIST,
+      STRING_LITERAL, UNARY_EXPRESSION),
   };
 
   /* ********************************************************** */
-  // identifier "(" PrimaryParameter* ")"
-  public static boolean PrimaryFunc(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryFunc")) return false;
+  // identifier PrimaryParameterList
+  public static boolean PrimaryFuncExpression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryFuncExpression")) return false;
     if (!nextTokenIs(b, ID)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = identifier(b, l + 1);
-    r = r && consumeToken(b, L_PAREN);
-    r = r && PrimaryFunc_2(b, l + 1);
-    r = r && consumeToken(b, R_PAREN);
-    exit_section_(b, m, PRIMARY_FUNC, r);
+    r = r && PrimaryParameterList(b, l + 1);
+    exit_section_(b, m, PRIMARY_FUNC_EXPRESSION, r);
     return r;
   }
 
-  // PrimaryParameter*
-  private static boolean PrimaryFunc_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryFunc_2")) return false;
+  /* ********************************************************** */
+  // '(' (primary_expr? (',' primary_expr )* )?')'
+  static boolean PrimaryParameterList(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryParameterList")) return false;
+    if (!nextTokenIs(b, L_PAREN)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
+    r = consumeToken(b, L_PAREN);
+    p = r; // pin = 1
+    r = r && report_error_(b, PrimaryParameterList_1(b, l + 1));
+    r = p && consumeToken(b, R_PAREN) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // (primary_expr? (',' primary_expr )* )?
+  private static boolean PrimaryParameterList_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryParameterList_1")) return false;
+    PrimaryParameterList_1_0(b, l + 1);
+    return true;
+  }
+
+  // primary_expr? (',' primary_expr )*
+  private static boolean PrimaryParameterList_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryParameterList_1_0")) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
+    r = PrimaryParameterList_1_0_0(b, l + 1);
+    p = r; // pin = 1
+    r = r && PrimaryParameterList_1_0_1(b, l + 1);
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // primary_expr?
+  private static boolean PrimaryParameterList_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryParameterList_1_0_0")) return false;
+    primary_expr(b, l + 1);
+    return true;
+  }
+
+  // (',' primary_expr )*
+  private static boolean PrimaryParameterList_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryParameterList_1_0_1")) return false;
     int c = current_position_(b);
     while (true) {
-      if (!PrimaryParameter(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "PrimaryFunc_2", c)) break;
+      if (!PrimaryParameterList_1_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "PrimaryParameterList_1_0_1", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
-  /* ********************************************************** */
-  // (primary_expr) (','|&')')
-  static boolean PrimaryParameter(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryParameter")) return false;
+  // ',' primary_expr
+  private static boolean PrimaryParameterList_1_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryParameterList_1_0_1_0")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
-    r = PrimaryParameter_0(b, l + 1);
-    p = r; // pin = 1
-    r = r && PrimaryParameter_1(b, l + 1);
-    exit_section_(b, l, m, r, p, not_paren_or_next_primary_parameter_parser_);
-    return r || p;
-  }
-
-  // (primary_expr)
-  private static boolean PrimaryParameter_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryParameter_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = primary_expr(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // ','|&')'
-  private static boolean PrimaryParameter_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryParameter_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = consumeToken(b, COMMA);
-    if (!r) r = PrimaryParameter_1_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // &')'
-  private static boolean PrimaryParameter_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryParameter_1_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _AND_);
-    r = consumeToken(b, R_PAREN);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+    p = r; // pin = 1
+    r = r && primary_expr(b, l + 1);
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   /* ********************************************************** */
@@ -248,6 +256,30 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // ("-"|"!") primary
+  public static boolean UnaryExpression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UnaryExpression")) return false;
+    if (!nextTokenIs(b, "<unary expression>", OP_NOT, OP_MINUS)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _COLLAPSE_, UNARY_EXPRESSION, "<unary expression>");
+    r = UnaryExpression_0(b, l + 1);
+    r = r && primary(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // "-"|"!"
+  private static boolean UnaryExpression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UnaryExpression_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_MINUS);
+    if (!r) r = consumeToken(b, OP_NOT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // TRUE | FALSE
   public static boolean boolean_literal(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "boolean_literal")) return false;
@@ -265,7 +297,7 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
   public static boolean chain(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "chain")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, CHAIN, "<chain>");
+    Marker m = enter_section_(b, l, _COLLAPSE_, CHAIN, "<chain>");
     r = chain_0(b, l + 1);
     if (!r) r = chain_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
@@ -360,7 +392,7 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // function_expr | function chain* | identifier_expr | identifier chain* |  primary_expr | lambda | StringList | primary
+  // function_expr | function chain? | identifier_expr | identifier chain? |  primary_expr | lambda | StringList | primary
   public static boolean expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression")) return false;
     boolean r;
@@ -377,7 +409,7 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // function chain*
+  // function chain?
   private static boolean expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_1")) return false;
     boolean r;
@@ -388,19 +420,14 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // chain*
+  // chain?
   private static boolean expression_1_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_1_1")) return false;
-    int c = current_position_(b);
-    while (true) {
-      if (!chain(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "expression_1_1", c)) break;
-      c = current_position_(b);
-    }
+    chain(b, l + 1);
     return true;
   }
 
-  // identifier chain*
+  // identifier chain?
   private static boolean expression_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_3")) return false;
     boolean r;
@@ -411,15 +438,10 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // chain*
+  // chain?
   private static boolean expression_3_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_3_1")) return false;
-    int c = current_position_(b);
-    while (true) {
-      if (!chain(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "expression_3_1", c)) break;
-      c = current_position_(b);
-    }
+    chain(b, l + 1);
     return true;
   }
 
@@ -587,38 +609,6 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // !(')'|(primary_expr))
-  static boolean not_paren_or_next_primary_parameter(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "not_paren_or_next_primary_parameter")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NOT_);
-    r = !not_paren_or_next_primary_parameter_0(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // ')'|(primary_expr)
-  private static boolean not_paren_or_next_primary_parameter_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "not_paren_or_next_primary_parameter_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, R_PAREN);
-    if (!r) r = not_paren_or_next_primary_parameter_0_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // (primary_expr)
-  private static boolean not_paren_or_next_primary_parameter_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "not_paren_or_next_primary_parameter_0_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = primary_expr(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
   // NUMBER
   public static boolean number_literal(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "number_literal")) return false;
@@ -701,16 +691,20 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // "(" primary_expr ")" | literal | PrimaryFunc | identifier | primary_unary_expr
+  // "(" primary_expr ")"
+  //   | PrimaryFuncExpression
+  //   | identifier
+  //   | UnaryExpression
+  //   | literal
   static boolean primary(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primary")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = primary_0(b, l + 1);
-    if (!r) r = literal(b, l + 1);
-    if (!r) r = PrimaryFunc(b, l + 1);
+    if (!r) r = PrimaryFuncExpression(b, l + 1);
     if (!r) r = identifier(b, l + 1);
-    if (!r) r = primary_unary_expr(b, l + 1);
+    if (!r) r = UnaryExpression(b, l + 1);
+    if (!r) r = literal(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -757,41 +751,6 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
     boolean r;
     Marker m = enter_section_(b);
     r = operator_literal(b, l + 1);
-    r = r && primary(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // "-" primary | "!" primary
-  public static boolean primary_unary_expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "primary_unary_expr")) return false;
-    if (!nextTokenIs(b, "<primary unary expr>", OP_NOT, OP_MINUS)) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PRIMARY_UNARY_EXPR, "<primary unary expr>");
-    r = primary_unary_expr_0(b, l + 1);
-    if (!r) r = primary_unary_expr_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // "-" primary
-  private static boolean primary_unary_expr_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "primary_unary_expr_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_MINUS);
-    r = r && primary(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // "!" primary
-  private static boolean primary_unary_expr_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "primary_unary_expr_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_NOT);
     r = r && primary(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -894,11 +853,6 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
   final static Parser not_paren_or_next_parameter_parser_ = new Parser() {
     public boolean parse(PsiBuilder b, int l) {
       return not_paren_or_next_parameter(b, l + 1);
-    }
-  };
-  final static Parser not_paren_or_next_primary_parameter_parser_ = new Parser() {
-    public boolean parse(PsiBuilder b, int l) {
-      return not_paren_or_next_primary_parameter(b, l + 1);
     }
   };
 }

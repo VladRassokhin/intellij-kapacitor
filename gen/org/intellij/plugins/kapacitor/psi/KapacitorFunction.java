@@ -10,7 +10,4 @@ public interface KapacitorFunction extends KapacitorExpression {
   @NotNull
   List<KapacitorExpression> getExpressionList();
 
-  @NotNull
-  KapacitorIdentifier getIdentifier();
-
 }

@@ -8,17 +8,16 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public class KapacitorPrimaryFuncImpl extends ASTWrapperPsiElement implements KapacitorPrimaryFunc {
+public class KapacitorPrimaryFuncExpressionImpl extends KapacitorExpressionImpl implements KapacitorPrimaryFuncExpression {
 
-  public KapacitorPrimaryFuncImpl(ASTNode node) {
+  public KapacitorPrimaryFuncExpressionImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull KapacitorElementVisitor visitor) {
-    visitor.visitPrimaryFunc(this);
+    visitor.visitPrimaryFuncExpression(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,14 +27,8 @@ public class KapacitorPrimaryFuncImpl extends ASTWrapperPsiElement implements Ka
 
   @Override
   @NotNull
-  public KapacitorIdentifier getIdentifier() {
-    return findNotNullChildByClass(KapacitorIdentifier.class);
-  }
-
-  @Override
-  @NotNull
-  public List<KapacitorPrimaryExpr> getPrimaryExprList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorPrimaryExpr.class);
+  public List<KapacitorExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
   }
 
 }

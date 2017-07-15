@@ -115,10 +115,10 @@ public class KapacitorParserTest extends ParsingTestCase {
 
   public void testStream() throws Exception {
     doCodeTest("var x = stream\n" +
-        "\t\t|window()\n" +
-        "\t\t.period(5m)\n" +
-        "\t\t.every(60s)\n" +
-        "\t\t|map(influxql.agg.mean('value'))");
+        "  |window()\n" +
+        "  .period(5m)\n" +
+        "  .every(60s)\n" +
+        "  |map(influxql.agg.mean('value'))");
   }
 
   public void testStreamDynFunc() throws Exception {

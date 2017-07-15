@@ -20,8 +20,7 @@ public interface KapacitorElementTypes {
   IElementType NUMBER_LITERAL = new KapacitorElementType("NUMBER_LITERAL");
   IElementType OPERATOR_LITERAL = new KapacitorElementType("OPERATOR_LITERAL");
   IElementType PRIMARY_EXPR = new KapacitorElementType("PRIMARY_EXPR");
-  IElementType PRIMARY_FUNC = new KapacitorElementType("PRIMARY_FUNC");
-  IElementType PRIMARY_UNARY_EXPR = new KapacitorElementType("PRIMARY_UNARY_EXPR");
+  IElementType PRIMARY_FUNC_EXPRESSION = new KapacitorElementType("PRIMARY_FUNC_EXPRESSION");
   IElementType REFERENCE_LITERAL = new KapacitorElementType("REFERENCE_LITERAL");
   IElementType REGEX_LITERAL = new KapacitorElementType("REGEX_LITERAL");
   IElementType STAR_LITERAL = new KapacitorElementType("STAR_LITERAL");
@@ -29,6 +28,7 @@ public interface KapacitorElementTypes {
   IElementType STRING_LIST = new KapacitorElementType("STRING_LIST");
   IElementType STRING_LITERAL = new KapacitorElementType("STRING_LITERAL");
   IElementType TYPE_DECLARATION = new KapacitorElementType("TYPE_DECLARATION");
+  IElementType UNARY_EXPRESSION = new KapacitorElementType("UNARY_EXPRESSION");
 
   IElementType ASGN = new KapacitorTokenType("=");
   IElementType AT = new KapacitorTokenType("@");
@@ -104,11 +104,8 @@ public interface KapacitorElementTypes {
       else if (type == PRIMARY_EXPR) {
         return new KapacitorPrimaryExprImpl(node);
       }
-      else if (type == PRIMARY_FUNC) {
-        return new KapacitorPrimaryFuncImpl(node);
-      }
-      else if (type == PRIMARY_UNARY_EXPR) {
-        return new KapacitorPrimaryUnaryExprImpl(node);
+      else if (type == PRIMARY_FUNC_EXPRESSION) {
+        return new KapacitorPrimaryFuncExpressionImpl(node);
       }
       else if (type == REFERENCE_LITERAL) {
         return new KapacitorReferenceLiteralImpl(node);
@@ -130,6 +127,9 @@ public interface KapacitorElementTypes {
       }
       else if (type == TYPE_DECLARATION) {
         return new KapacitorTypeDeclarationImpl(node);
+      }
+      else if (type == UNARY_EXPRESSION) {
+        return new KapacitorUnaryExpressionImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

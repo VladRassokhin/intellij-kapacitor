@@ -8,15 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface KapacitorPrimaryExpr extends KapacitorExpression {
 
   @NotNull
-  List<KapacitorPrimaryFunc> getPrimaryFuncList();
-
-  @NotNull
-  List<KapacitorIdentifier> getIdentifierList();
-
-  @NotNull
-  List<KapacitorPrimaryExpr> getPrimaryExprList();
-
-  @NotNull
-  List<KapacitorPrimaryUnaryExpr> getPrimaryUnaryExprList();
+  List<KapacitorExpression> getExpressionList();
 
 }

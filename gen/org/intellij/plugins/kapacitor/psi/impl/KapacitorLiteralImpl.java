@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public abstract class KapacitorLiteralImpl extends ASTWrapperPsiElement implements KapacitorLiteral {
+public abstract class KapacitorLiteralImpl extends KapacitorExpressionImpl implements KapacitorLiteral {
 
   public KapacitorLiteralImpl(ASTNode node) {
     super(node);

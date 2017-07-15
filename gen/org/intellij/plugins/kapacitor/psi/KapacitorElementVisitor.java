@@ -7,12 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public class KapacitorElementVisitor extends PsiElementVisitor {
 
-  public void visitPrimaryFunc(@NotNull KapacitorPrimaryFunc o) {
-    visitPsiElement(o);
+  public void visitPrimaryFuncExpression(@NotNull KapacitorPrimaryFuncExpression o) {
+    visitExpression(o);
   }
 
   public void visitStringList(@NotNull KapacitorStringList o) {
-    visitPsiElement(o);
+    visitExpression(o);
+  }
+
+  public void visitUnaryExpression(@NotNull KapacitorUnaryExpression o) {
+    visitExpression(o);
   }
 
   public void visitBooleanLiteral(@NotNull KapacitorBooleanLiteral o) {
@@ -20,7 +24,7 @@ public class KapacitorElementVisitor extends PsiElementVisitor {
   }
 
   public void visitChain(@NotNull KapacitorChain o) {
-    visitPsiElement(o);
+    visitExpression(o);
   }
 
   public void visitDeclaration(@NotNull KapacitorDeclaration o) {
@@ -40,7 +44,7 @@ public class KapacitorElementVisitor extends PsiElementVisitor {
   }
 
   public void visitIdentifier(@NotNull KapacitorIdentifier o) {
-    visitPsiElement(o);
+    visitExpression(o);
   }
 
   public void visitLambda(@NotNull KapacitorLambda o) {
@@ -48,7 +52,7 @@ public class KapacitorElementVisitor extends PsiElementVisitor {
   }
 
   public void visitLiteral(@NotNull KapacitorLiteral o) {
-    visitPsiElement(o);
+    visitExpression(o);
   }
 
   public void visitNumberLiteral(@NotNull KapacitorNumberLiteral o) {
@@ -61,10 +65,6 @@ public class KapacitorElementVisitor extends PsiElementVisitor {
 
   public void visitPrimaryExpr(@NotNull KapacitorPrimaryExpr o) {
     visitExpression(o);
-  }
-
-  public void visitPrimaryUnaryExpr(@NotNull KapacitorPrimaryUnaryExpr o) {
-    visitPsiElement(o);
   }
 
   public void visitReferenceLiteral(@NotNull KapacitorReferenceLiteral o) {

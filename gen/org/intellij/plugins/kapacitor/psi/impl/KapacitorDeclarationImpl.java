@@ -28,14 +28,8 @@ public class KapacitorDeclarationImpl extends ASTWrapperPsiElement implements Ka
 
   @Override
   @NotNull
-  public KapacitorExpression getExpression() {
-    return findNotNullChildByClass(KapacitorExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public KapacitorIdentifier getIdentifier() {
-    return findNotNullChildByClass(KapacitorIdentifier.class);
+  public List<KapacitorExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
   }
 
 }

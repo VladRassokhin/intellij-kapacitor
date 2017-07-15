@@ -5,6 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface KapacitorLiteral extends PsiElement {
+public interface KapacitorLiteral extends KapacitorExpression {
 
 }

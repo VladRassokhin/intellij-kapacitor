@@ -27,8 +27,8 @@ public class KapacitorLambdaImpl extends KapacitorExpressionImpl implements Kapa
 
   @Override
   @NotNull
-  public KapacitorPrimaryExpr getPrimaryExpr() {
-    return findNotNullChildByClass(KapacitorPrimaryExpr.class);
+  public KapacitorExpression getExpression() {
+    return findNotNullChildByClass(KapacitorExpression.class);
   }
 
 }

@@ -31,10 +31,4 @@ public class KapacitorFunctionImpl extends KapacitorExpressionImpl implements Ka
     return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
   }
 
-  @Override
-  @NotNull
-  public KapacitorIdentifier getIdentifier() {
-    return findNotNullChildByClass(KapacitorIdentifier.class);
-  }
-
 }

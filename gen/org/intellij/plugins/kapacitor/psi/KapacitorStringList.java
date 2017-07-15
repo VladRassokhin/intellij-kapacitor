@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface KapacitorStringList extends PsiElement {
-
-  @NotNull
-  List<KapacitorIdentifier> getIdentifierList();
-
-  @NotNull
-  List<KapacitorLiteral> getLiteralList();
+public interface KapacitorStringList extends KapacitorExpression {
 
 }

@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public class KapacitorChainImpl extends ASTWrapperPsiElement implements KapacitorChain {
+public class KapacitorChainImpl extends KapacitorExpressionImpl implements KapacitorChain {
 
   public KapacitorChainImpl(ASTNode node) {
     super(node);
@@ -28,20 +27,8 @@ public class KapacitorChainImpl extends ASTWrapperPsiElement implements Kapacito
 
   @Override
   @NotNull
-  public List<KapacitorChain> getChainList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorChain.class);
-  }
-
-  @Override
-  @Nullable
-  public KapacitorFunction getFunction() {
-    return findChildByClass(KapacitorFunction.class);
-  }
-
-  @Override
-  @Nullable
-  public KapacitorIdentifier getIdentifier() {
-    return findChildByClass(KapacitorIdentifier.class);
+  public List<KapacitorExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
   }
 
 }
