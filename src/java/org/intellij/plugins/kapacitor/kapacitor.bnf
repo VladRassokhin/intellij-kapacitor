@@ -175,7 +175,9 @@ duration_literal  ::= DURATION //int_literal duration_unit
 //duration_unit     ::= "u" | "µ" | "ms" | "s" | "m" | "h" | "d" | "w"
 string_literal    ::= SINGLE_QUOTED_STRING | TRIPLE_QUOTED_STRING
 star_literal      ::= "*"
-regex_literal     ::= REGEX_STRING
+regex_literal     ::= REGEX_STRING {
+  mixin="org.intellij.plugins.kapacitor.psi.impl.KapacitorRegexLiteralMixin"
+}
 reference_literal ::= REFERENCE_STRING
 
 // Operators

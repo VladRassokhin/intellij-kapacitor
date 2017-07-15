@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public class KapacitorRegexLiteralImpl extends KapacitorLiteralImpl implements KapacitorRegexLiteral {
+public class KapacitorRegexLiteralImpl extends KapacitorRegexLiteralMixin implements KapacitorRegexLiteral {
 
   public KapacitorRegexLiteralImpl(ASTNode node) {
     super(node);

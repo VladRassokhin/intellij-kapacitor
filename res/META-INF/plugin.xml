@@ -28,6 +28,14 @@
 
     <lang.syntaxHighlighterFactory key="Kapacitor" implementationClass="org.intellij.plugins.kapacitor.KapacitorSyntaxHighlighterFactory"/>
     <colorSettingsPage implementation="org.intellij.plugins.kapacitor.KapacitorColorsPage"/>
+
+    <!-- CodeInsight -->
+    <lang.commenter language="Kapacitor" implementationClass="org.intellij.plugins.kapacitor.editor.KapacitorCommenter"/>
+    <lang.braceMatcher language="Kapacitor" implementationClass="org.intellij.plugins.kapacitor.codeinsight.KapacitorBraceMatcher"/>
+
+    <!-- Inject Regexps -->
+    <languageInjector implementation="org.intellij.plugins.kapacitor.RegexInjector"/>
+
   </extensions>
 
   <application-components>
