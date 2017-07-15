@@ -1,0 +1,12 @@
+stream
+    |from()
+        .measurement('app')
+    |eval(lambda: "errors" / "total")
+        .as('error_percent')
+    // Write the transformed data to InfluxDB
+    |influxDBOut()
+        .database('mydb')
+        .retentionPolicy('myrp')
+        .measurement('errors')
+        .tag('kapacitor', 'true')
+        .tag('version', '0.2')

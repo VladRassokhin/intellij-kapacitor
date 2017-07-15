@@ -1,0 +1,10 @@
+KapacitorFile: a.tick
+  KapacitorStatementImpl(STATEMENT)
+    KapacitorFunctionImpl(FUNCTION)
+      KapacitorIdentifierImpl(IDENTIFIER)
+        PsiElement(ID)('f')
+      PsiElement(()('(')
+      KapacitorPrimaryExprImpl(PRIMARY_EXPR)
+        KapacitorStringLiteralImpl(STRING_LITERAL)
+          PsiElement(SINGLE_QUOTED_STRING)(''a\'sdf'')
+      PsiElement())(')')

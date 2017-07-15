@@ -1,0 +1,19 @@
+var x = 5
+var y = x * 2
+
+var x = lambda: "value" < 10
+
+var x = /.*\//
+
+var x = a.f()
+
+var x = a.f(/.*/)
+
+var x = int(sqrt(16.0)) + 4
+
+var x = a.f(y/4.0)
+
+var x = 3m
+var y = -x
+
+var x = a|b()

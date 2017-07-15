@@ -1,0 +1,13 @@
+var x = 'str'
+var x = ['str', 'asdf', 'another', s, *]
+var x = TRUE
+var x = !FALSE
+var x = 1
+var x = 0644
+var x = -0600
+var x = -1
+var x = 1.0
+var x = -1.0
+var x = 5h
+var x = -5h
+var x = 5 + 5
