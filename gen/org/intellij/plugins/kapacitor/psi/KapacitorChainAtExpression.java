@@ -5,6 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface KapacitorExpression extends PsiElement {
+public interface KapacitorChainAtExpression extends KapacitorBinaryExpression {
 
 }

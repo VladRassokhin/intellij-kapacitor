@@ -7,6 +7,54 @@ import com.intellij.psi.PsiElement;
 
 public class KapacitorElementVisitor extends PsiElementVisitor {
 
+  public void visitBinaryAdditionExpression(@NotNull KapacitorBinaryAdditionExpression o) {
+    visitBinaryExpression(o);
+  }
+
+  public void visitBinaryAndExpression(@NotNull KapacitorBinaryAndExpression o) {
+    visitBinaryExpression(o);
+  }
+
+  public void visitBinaryEqualityExpression(@NotNull KapacitorBinaryEqualityExpression o) {
+    visitBinaryExpression(o);
+  }
+
+  public void visitBinaryExpression(@NotNull KapacitorBinaryExpression o) {
+    visitExpression(o);
+  }
+
+  public void visitBinaryMultiplyExpression(@NotNull KapacitorBinaryMultiplyExpression o) {
+    visitBinaryExpression(o);
+  }
+
+  public void visitBinaryOrExpression(@NotNull KapacitorBinaryOrExpression o) {
+    visitBinaryExpression(o);
+  }
+
+  public void visitBinaryRelationalExpression(@NotNull KapacitorBinaryRelationalExpression o) {
+    visitBinaryExpression(o);
+  }
+
+  public void visitChainAtExpression(@NotNull KapacitorChainAtExpression o) {
+    visitBinaryExpression(o);
+  }
+
+  public void visitChainDotExpression(@NotNull KapacitorChainDotExpression o) {
+    visitBinaryExpression(o);
+  }
+
+  public void visitChainPipeExpression(@NotNull KapacitorChainPipeExpression o) {
+    visitBinaryExpression(o);
+  }
+
+  public void visitLambdaExpression(@NotNull KapacitorLambdaExpression o) {
+    visitExpression(o);
+  }
+
+  public void visitParenthesizedExpression(@NotNull KapacitorParenthesizedExpression o) {
+    visitExpression(o);
+  }
+
   public void visitPrimaryFuncExpression(@NotNull KapacitorPrimaryFuncExpression o) {
     visitExpression(o);
   }
@@ -23,10 +71,6 @@ public class KapacitorElementVisitor extends PsiElementVisitor {
     visitLiteral(o);
   }
 
-  public void visitChain(@NotNull KapacitorChain o) {
-    visitExpression(o);
-  }
-
   public void visitDeclaration(@NotNull KapacitorDeclaration o) {
     visitPsiElement(o);
   }
@@ -39,15 +83,7 @@ public class KapacitorElementVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitFunction(@NotNull KapacitorFunction o) {
-    visitExpression(o);
-  }
-
   public void visitIdentifier(@NotNull KapacitorIdentifier o) {
-    visitExpression(o);
-  }
-
-  public void visitLambda(@NotNull KapacitorLambda o) {
     visitExpression(o);
   }
 
@@ -57,14 +93,6 @@ public class KapacitorElementVisitor extends PsiElementVisitor {
 
   public void visitNumberLiteral(@NotNull KapacitorNumberLiteral o) {
     visitLiteral(o);
-  }
-
-  public void visitOperatorLiteral(@NotNull KapacitorOperatorLiteral o) {
-    visitLiteral(o);
-  }
-
-  public void visitPrimaryExpr(@NotNull KapacitorPrimaryExpr o) {
-    visitExpression(o);
   }
 
   public void visitReferenceLiteral(@NotNull KapacitorReferenceLiteral o) {

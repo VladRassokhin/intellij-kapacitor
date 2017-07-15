@@ -11,7 +11,7 @@ import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public class KapacitorExpressionImpl extends ASTWrapperPsiElement implements KapacitorExpression {
+public abstract class KapacitorExpressionImpl extends ASTWrapperPsiElement implements KapacitorExpression {
 
   public KapacitorExpressionImpl(ASTNode node) {
     super(node);
@@ -24,12 +24,6 @@ public class KapacitorExpressionImpl extends ASTWrapperPsiElement implements Kap
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof KapacitorElementVisitor) accept((KapacitorElementVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<KapacitorExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
   }
 
 }

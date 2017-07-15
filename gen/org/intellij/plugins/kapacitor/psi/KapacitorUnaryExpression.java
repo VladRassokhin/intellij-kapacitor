@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface KapacitorUnaryExpression extends KapacitorExpression {
 
-  @NotNull
+  @Nullable
   KapacitorExpression getExpression();
 
 }

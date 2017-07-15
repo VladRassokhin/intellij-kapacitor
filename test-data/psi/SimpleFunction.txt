@@ -1,6 +1,6 @@
 KapacitorFile: a.tick
   KapacitorStatementImpl(STATEMENT)
-    KapacitorFunctionImpl(FUNCTION)
+    KapacitorPrimaryFuncExpressionImpl(PRIMARY_FUNC_EXPRESSION)
       KapacitorIdentifierImpl(IDENTIFIER)
         PsiElement(ID)('string')
       PsiElement(()('(')

@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.intellij.plugins.kapacitor.psi
+package org.intellij.plugins.kapacitor.psi.impl
 
-import com.intellij.lang.parser.GeneratedParserUtilBase
+import com.intellij.lang.ASTNode
+import org.intellij.plugins.kapacitor.psi.KapacitorBinaryExpression
 
-class KapacitorParserUtil : GeneratedParserUtilBase()
+abstract class BinaryExpressionMixin(node: ASTNode) : KapacitorExpressionImpl(node), KapacitorBinaryExpression {
+}

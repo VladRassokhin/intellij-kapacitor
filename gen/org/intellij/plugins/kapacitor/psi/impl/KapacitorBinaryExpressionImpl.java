@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public class KapacitorStringListImpl extends KapacitorExpressionImpl implements KapacitorStringList {
+public class KapacitorBinaryExpressionImpl extends BinaryExpressionMixin implements KapacitorBinaryExpression {
 
-  public KapacitorStringListImpl(ASTNode node) {
+  public KapacitorBinaryExpressionImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull KapacitorElementVisitor visitor) {
-    visitor.visitStringList(this);
+    visitor.visitBinaryExpression(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

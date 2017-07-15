@@ -10,25 +10,19 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public class KapacitorLambdaImpl extends KapacitorExpressionImpl implements KapacitorLambda {
+public class KapacitorChainAtExpressionImpl extends KapacitorBinaryExpressionImpl implements KapacitorChainAtExpression {
 
-  public KapacitorLambdaImpl(ASTNode node) {
+  public KapacitorChainAtExpressionImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull KapacitorElementVisitor visitor) {
-    visitor.visitLambda(this);
+    visitor.visitChainAtExpression(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof KapacitorElementVisitor) accept((KapacitorElementVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public KapacitorExpression getExpression() {
-    return findNotNullChildByClass(KapacitorExpression.class);
   }
 
 }

@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface KapacitorLambda extends KapacitorExpression {
+public interface KapacitorBinaryExpression extends KapacitorExpression {
 
   @NotNull
-  KapacitorExpression getExpression();
+  List<KapacitorExpression> getExpressionList();
 
 }

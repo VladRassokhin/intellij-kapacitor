@@ -88,6 +88,8 @@
   ]
 
   extends(".*_literal")=literal
+  extends("Chain.+Expression")=BinaryExpression
+  extends("Binary.+Expression")=BinaryExpression
   extends(".*Expression|identifier|literal")=expression
 }
 
@@ -97,39 +99,52 @@ statement ::= type_declaration | declaration | expression
 type_declaration ::= "var" identifier identifier
 declaration ::= "var" identifier "=" expression
 
-expression ::= function_expr | function chain? | identifier_expr | identifier chain? |  primary_expr | lambda | StringList | primary
+expression ::=
+    ParenthesizedExpression
+  | LambdaExpression
+  | BinaryOrExpression
+  | BinaryAndExpression
 
-chain ::= ("@"|"|"|".") function chain* | ("." identifier chain*)
-{ extends=expression }
+  | BinaryEqualityExpression
+  | BinaryRelationalExpression
 
-private function_expr ::= function operator_literal primary
-{ extends=expression }
-private identifier_expr ::= identifier operator_literal primary
-{ extends=expression }
-primary_expr ::= primary (operator_literal primary)*
-{ extends=expression }
-lambda::="lambda:" primary_expr
-{ extends=expression }
-function ::= identifier "(" parameter* ")"
-{ extends=expression }
-// parameters - inlined
-private parameter ::= (expression) (','|&')') {
-  pin=1
-  recoverWhile = not_paren_or_next_parameter
-}
-private primary ::=
-  "(" primary_expr ")"
+  | BinaryAdditionExpression
+  | BinaryMultiplyExpression
+
+  | ChainPipeExpression
+  | ChainDotExpression
+  | ChainAtExpression
   | PrimaryFuncExpression
+
   | identifier
   | UnaryExpression
   | literal
-{ extends=expression }
+  | StringList
 
-UnaryExpression::= ("-"|"!") primary
+LambdaExpression::="lambda:" expression
+
+ParenthesizedExpression::= '(' <<push 0>> expression ')' <<pop>>
+fake BinaryExpression ::= expression+ {
+  mixin="org.intellij.plugins.kapacitor.psi.impl.BinaryExpressionMixin"
+}
+BinaryRelationalExpression::= expression relationalOp expression
+BinaryEqualityExpression::= expression equalityOp expression
+
+BinaryAndExpression::= expression andOp expression
+BinaryOrExpression::= expression orOp expression
+
+BinaryAdditionExpression::= expression addOp expression
+BinaryMultiplyExpression::= expression mulOp expression
+
+UnaryExpression::= unaryOp expression
+
+ChainDotExpression ::= expression DOT expression
+ChainPipeExpression ::= expression PIPE expression
+ChainAtExpression ::= expression AT expression
 
 
-PrimaryFuncExpression ::= identifier PrimaryParameterList
-private PrimaryParameterList ::='(' (primary_expr? (',' primary_expr )* )?')' {
+PrimaryFuncExpression ::= expression PrimaryParameterList
+private PrimaryParameterList ::='(' (expression? (',' expression )* )?')' {
   pin(".*")=1
 }
 StringList ::= '[' StringListItem* ']'  {
@@ -162,10 +177,21 @@ string_literal    ::= SINGLE_QUOTED_STRING | TRIPLE_QUOTED_STRING
 star_literal      ::= "*"
 regex_literal     ::= REGEX_STRING
 reference_literal ::= REFERENCE_STRING
-operator_literal  ::= "+" | "-" | "*" | "/" | "==" | "!=" |
-                 "<" | "<=" | ">" | ">=" | "=~" | "!~" |
-                 "AND" | "OR"
 
+// Operators
+private mulOp ::= OP_Mult | OP_Div | OP_Mod
+{ name="operator" }
+private addOp ::= OP_Plus | OP_Minus
+{ name="operator" }
+private unaryOp ::= addOp | OP_Not //Not sure whether unary plus should be supported
+{ name="operator" }
+private orOp ::= OP_Or
+{ name="operator" }
+private andOp ::= OP_And
+{ name="operator" }
+private equalityOp ::= OP_Equal | OP_NotEqual | OP_RegexEqual | OP_RegexNotEqual
+{ name="operator" }
+private relationalOp ::= OP_Less | OP_Greater | OP_LessEqual | OP_GreaterEqual
+{ name="operator" }
 
-private not_paren_or_next_parameter ::= !(')'|(expression))
 private not_bracket_or_next_value ::= !(']'|(string_literal | identifier | star_literal))

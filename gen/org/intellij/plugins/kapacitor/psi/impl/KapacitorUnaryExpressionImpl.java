@@ -26,9 +26,9 @@ public class KapacitorUnaryExpressionImpl extends KapacitorExpressionImpl implem
   }
 
   @Override
-  @NotNull
+  @Nullable
   public KapacitorExpression getExpression() {
-    return findNotNullChildByClass(KapacitorExpression.class);
+    return findChildByClass(KapacitorExpression.class);
   }
 
 }

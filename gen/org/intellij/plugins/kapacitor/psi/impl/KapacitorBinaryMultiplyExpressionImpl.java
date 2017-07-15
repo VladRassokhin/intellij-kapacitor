@@ -10,25 +10,19 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public class KapacitorStringListImpl extends KapacitorExpressionImpl implements KapacitorStringList {
+public class KapacitorBinaryMultiplyExpressionImpl extends KapacitorBinaryExpressionImpl implements KapacitorBinaryMultiplyExpression {
 
-  public KapacitorStringListImpl(ASTNode node) {
+  public KapacitorBinaryMultiplyExpressionImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull KapacitorElementVisitor visitor) {
-    visitor.visitStringList(this);
+    visitor.visitBinaryMultiplyExpression(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof KapacitorElementVisitor) accept((KapacitorElementVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<KapacitorExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
   }
 
 }

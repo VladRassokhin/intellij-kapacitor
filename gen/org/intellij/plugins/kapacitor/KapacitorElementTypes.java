@@ -8,18 +8,24 @@ import org.intellij.plugins.kapacitor.psi.impl.*;
 
 public interface KapacitorElementTypes {
 
+  IElementType BINARY_ADDITION_EXPRESSION = new KapacitorElementType("BINARY_ADDITION_EXPRESSION");
+  IElementType BINARY_AND_EXPRESSION = new KapacitorElementType("BINARY_AND_EXPRESSION");
+  IElementType BINARY_EQUALITY_EXPRESSION = new KapacitorElementType("BINARY_EQUALITY_EXPRESSION");
+  IElementType BINARY_MULTIPLY_EXPRESSION = new KapacitorElementType("BINARY_MULTIPLY_EXPRESSION");
+  IElementType BINARY_OR_EXPRESSION = new KapacitorElementType("BINARY_OR_EXPRESSION");
+  IElementType BINARY_RELATIONAL_EXPRESSION = new KapacitorElementType("BINARY_RELATIONAL_EXPRESSION");
   IElementType BOOLEAN_LITERAL = new KapacitorElementType("BOOLEAN_LITERAL");
-  IElementType CHAIN = new KapacitorElementType("CHAIN");
+  IElementType CHAIN_AT_EXPRESSION = new KapacitorElementType("CHAIN_AT_EXPRESSION");
+  IElementType CHAIN_DOT_EXPRESSION = new KapacitorElementType("CHAIN_DOT_EXPRESSION");
+  IElementType CHAIN_PIPE_EXPRESSION = new KapacitorElementType("CHAIN_PIPE_EXPRESSION");
   IElementType DECLARATION = new KapacitorElementType("DECLARATION");
   IElementType DURATION_LITERAL = new KapacitorElementType("DURATION_LITERAL");
   IElementType EXPRESSION = new KapacitorElementType("EXPRESSION");
-  IElementType FUNCTION = new KapacitorElementType("FUNCTION");
   IElementType IDENTIFIER = new KapacitorElementType("IDENTIFIER");
-  IElementType LAMBDA = new KapacitorElementType("LAMBDA");
+  IElementType LAMBDA_EXPRESSION = new KapacitorElementType("LAMBDA_EXPRESSION");
   IElementType LITERAL = new KapacitorElementType("LITERAL");
   IElementType NUMBER_LITERAL = new KapacitorElementType("NUMBER_LITERAL");
-  IElementType OPERATOR_LITERAL = new KapacitorElementType("OPERATOR_LITERAL");
-  IElementType PRIMARY_EXPR = new KapacitorElementType("PRIMARY_EXPR");
+  IElementType PARENTHESIZED_EXPRESSION = new KapacitorElementType("PARENTHESIZED_EXPRESSION");
   IElementType PRIMARY_FUNC_EXPRESSION = new KapacitorElementType("PRIMARY_FUNC_EXPRESSION");
   IElementType REFERENCE_LITERAL = new KapacitorElementType("REFERENCE_LITERAL");
   IElementType REGEX_LITERAL = new KapacitorElementType("REGEX_LITERAL");
@@ -71,11 +77,35 @@ public interface KapacitorElementTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-       if (type == BOOLEAN_LITERAL) {
+       if (type == BINARY_ADDITION_EXPRESSION) {
+        return new KapacitorBinaryAdditionExpressionImpl(node);
+      }
+      else if (type == BINARY_AND_EXPRESSION) {
+        return new KapacitorBinaryAndExpressionImpl(node);
+      }
+      else if (type == BINARY_EQUALITY_EXPRESSION) {
+        return new KapacitorBinaryEqualityExpressionImpl(node);
+      }
+      else if (type == BINARY_MULTIPLY_EXPRESSION) {
+        return new KapacitorBinaryMultiplyExpressionImpl(node);
+      }
+      else if (type == BINARY_OR_EXPRESSION) {
+        return new KapacitorBinaryOrExpressionImpl(node);
+      }
+      else if (type == BINARY_RELATIONAL_EXPRESSION) {
+        return new KapacitorBinaryRelationalExpressionImpl(node);
+      }
+      else if (type == BOOLEAN_LITERAL) {
         return new KapacitorBooleanLiteralImpl(node);
       }
-      else if (type == CHAIN) {
-        return new KapacitorChainImpl(node);
+      else if (type == CHAIN_AT_EXPRESSION) {
+        return new KapacitorChainAtExpressionImpl(node);
+      }
+      else if (type == CHAIN_DOT_EXPRESSION) {
+        return new KapacitorChainDotExpressionImpl(node);
+      }
+      else if (type == CHAIN_PIPE_EXPRESSION) {
+        return new KapacitorChainPipeExpressionImpl(node);
       }
       else if (type == DECLARATION) {
         return new KapacitorDeclarationImpl(node);
@@ -83,26 +113,17 @@ public interface KapacitorElementTypes {
       else if (type == DURATION_LITERAL) {
         return new KapacitorDurationLiteralImpl(node);
       }
-      else if (type == EXPRESSION) {
-        return new KapacitorExpressionImpl(node);
-      }
-      else if (type == FUNCTION) {
-        return new KapacitorFunctionImpl(node);
-      }
       else if (type == IDENTIFIER) {
         return new KapacitorIdentifierImpl(node);
       }
-      else if (type == LAMBDA) {
-        return new KapacitorLambdaImpl(node);
+      else if (type == LAMBDA_EXPRESSION) {
+        return new KapacitorLambdaExpressionImpl(node);
       }
       else if (type == NUMBER_LITERAL) {
         return new KapacitorNumberLiteralImpl(node);
       }
-      else if (type == OPERATOR_LITERAL) {
-        return new KapacitorOperatorLiteralImpl(node);
-      }
-      else if (type == PRIMARY_EXPR) {
-        return new KapacitorPrimaryExprImpl(node);
+      else if (type == PARENTHESIZED_EXPRESSION) {
+        return new KapacitorParenthesizedExpressionImpl(node);
       }
       else if (type == PRIMARY_FUNC_EXPRESSION) {
         return new KapacitorPrimaryFuncExpressionImpl(node);

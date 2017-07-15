@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface KapacitorStringList extends KapacitorExpression {
 
+  @NotNull
+  List<KapacitorExpression> getExpressionList();
+
 }
