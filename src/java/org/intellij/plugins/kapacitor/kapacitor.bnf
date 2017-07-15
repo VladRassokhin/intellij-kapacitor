@@ -1,0 +1,163 @@
+/*
+ * Copyright 2000-2017 JetBrains s.r.o.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+{
+//  org.intellij.plugins.hcl
+  parserClass = 'org.intellij.plugins.kapacitor.KapacitorParser'
+  parserUtilClass = "org.intellij.plugins.kapacitor.psi.KapacitorParserUtil"
+  psiPackage = 'org.intellij.plugins.kapacitor.psi'
+  psiImplPackage = 'org.intellij.plugins.kapacitor.psi.impl'
+
+  elementTypeHolderClass = 'org.intellij.plugins.kapacitor.KapacitorElementTypes'
+  elementTypeClass = 'org.intellij.plugins.kapacitor.KapacitorElementType'
+  psiClassPrefix = 'Kapacitor'
+  psiVisitorName = 'KapacitorElementVisitor'
+
+//  psiImplUtilClass = 'org.intellij.plugins.kapacitor.psi.impl.KapacitorPsiImplUtilJ'
+  tokenTypeClass = 'org.intellij.plugins.kapacitor.KapacitorTokenType'
+
+  tokens = [
+//    space = "regexp:\s+"
+    line_comment = "regexp:(//.*)|(#.*)"
+
+    L_PAREN='('
+    R_PAREN=')'
+    L_BRACKET='['
+    R_BRACKET=']'
+
+    ASGN='='
+
+    PIPE='|'
+    AT="@"
+    COMMA=','
+//    STAR='*'
+
+    DOT='.'
+
+    // from operatorStr
+    OP_Not =           "!"
+    OP_Plus =          "+"
+    OP_Minus =         "-"
+    OP_Mult =          "*"
+    OP_Div =           "/"
+    OP_Mod =           "%"
+    OP_Equal =         "=="
+    OP_NotEqual =      "!="
+    OP_Less =          "<"
+    OP_Greater =       ">"
+    OP_LessEqual =     "<="
+    OP_GreaterEqual =  ">="
+    OP_RegexEqual =    "=~"
+    OP_RegexNotEqual = "!~"
+    OP_And =           "AND"
+    OP_Or =            "OR"
+
+    // from keywords
+//    KW_And    = "AND"
+//    KW_Or     = "OR"
+//    KW_True   = "TRUE"
+//    KW_False  = "FALSE"
+    KW_Var    = "var"
+    KW_Lambda = "lambda:"
+
+    TRUE='TRUE'
+    FALSE='FALSE'
+
+    ID="regexp:[a-zA-Z_][0-9a-zA-Z_]*"
+    NUMBER='regexp:-?(\d+(\.\d+)?)|(\.\d+)'
+    DURATION='regexp:[1-9]\d*([uµsmhdw]|ms)'
+
+// TODO:Add tailing '?' to strings
+    SINGLE_QUOTED_STRING="regexp:'([^\\\'\r\n]|\\[^\r\n])*'"
+    TRIPLE_QUOTED_STRING="regexp:'''([^\\\r\n]|\\[^\r\n])*'''"
+
+    REGEX_STRING="regexp:/([^\\\r\n]|\\[^\r\n])*/"
+    REFERENCE_STRING="regexp:\"([^\\\"\r\n]|\\[^\r\n])*\""
+  ]
+
+  extends(".*_literal")=literal
+}
+
+program ::= statement*
+
+statement ::= type_declaration | declaration | expression
+type_declaration ::= "var" identifier identifier
+declaration ::= "var" identifier "=" expression
+
+expression ::= function_expr | function chain* | identifier_expr | identifier chain* |  primary_expr | lambda | StringList | primary
+
+chain ::= ("@"|"|"|".") function chain* | ("." identifier chain*)
+
+private function_expr ::= function operator_literal primary
+{ extends=expression }
+private identifier_expr ::= identifier operator_literal primary
+{ extends=expression }
+primary_expr ::= primary (operator_literal primary)*
+{ extends=expression }
+lambda::="lambda:" primary_expr
+{ extends=expression }
+function ::= identifier "(" parameter* ")"
+{ extends=expression }
+// parameters - inlined
+private parameter ::= (expression) (','|&')') {
+  pin=1
+  recoverWhile = not_paren_or_next_parameter
+}
+private primary ::=  "(" primary_expr ")" | literal | PrimaryFunc | identifier | primary_unary_expr
+primary_unary_expr::= "-" primary | "!" primary
+
+PrimaryFunc ::= identifier "(" PrimaryParameter* ")"
+// PrimaryParameters inlined
+private PrimaryParameter ::= (primary_expr) (','|&')') {
+  pin=1
+  recoverWhile = not_paren_or_next_primary_parameter
+}
+StringList ::= '[' StringListItem* ']'  {
+  pin=1
+}
+// string_list_items inlined
+private StringListItem ::= (string_literal | identifier | star_literal) (','|&']') {
+  pin=1
+  recoverWhile = not_bracket_or_next_value
+}
+
+literal ::= number_literal | string_literal | boolean_literal | duration_literal | regex_literal | star_literal | reference_literal
+
+
+
+// Primitives:
+//private
+//unicode_char      ::= CHAR // 'regexp:[^\n\r]' // an arbitrary Unicode code point except newline
+//digit             ::= 'regexp:[0-9]'
+//ascii_letter      ::= 'regexp:[a-zA-Z]'
+//letter            ::= ascii_letter | "_"
+identifier        ::= ID //letter (letter | digit)*
+boolean_literal   ::= TRUE | FALSE // "TRUE" | "FALSE"
+//int_literal       ::= INTEGER // 'regexp:[1-9]' digit*
+number_literal    ::= NUMBER // digit+ ("." digit*)*
+duration_literal  ::= DURATION //int_literal duration_unit
+//duration_unit     ::= "u" | "µ" | "ms" | "s" | "m" | "h" | "d" | "w"
+string_literal    ::= SINGLE_QUOTED_STRING | TRIPLE_QUOTED_STRING
+star_literal      ::= "*"
+regex_literal     ::= REGEX_STRING
+reference_literal ::= REFERENCE_STRING
+operator_literal  ::= "+" | "-" | "*" | "/" | "==" | "!=" |
+                 "<" | "<=" | ">" | ">=" | "=~" | "!~" |
+                 "AND" | "OR"
+
+
+private not_paren_or_next_parameter ::= !(')'|(expression))
+private not_paren_or_next_primary_parameter ::= !(')'|(primary_expr))
+private not_bracket_or_next_value ::= !(']'|(string_literal | identifier | star_literal))
