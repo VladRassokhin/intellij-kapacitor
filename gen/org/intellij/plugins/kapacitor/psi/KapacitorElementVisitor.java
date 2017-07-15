@@ -4,6 +4,7 @@ package org.intellij.plugins.kapacitor.psi;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNamedElement;
 
 public class KapacitorElementVisitor extends PsiElementVisitor {
 
@@ -51,11 +52,15 @@ public class KapacitorElementVisitor extends PsiElementVisitor {
     visitExpression(o);
   }
 
-  public void visitParenthesizedExpression(@NotNull KapacitorParenthesizedExpression o) {
+  public void visitMethodCallExpression(@NotNull KapacitorMethodCallExpression o) {
     visitExpression(o);
   }
 
-  public void visitPrimaryFuncExpression(@NotNull KapacitorPrimaryFuncExpression o) {
+  public void visitParameterList(@NotNull KapacitorParameterList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParenthesizedExpression(@NotNull KapacitorParenthesizedExpression o) {
     visitExpression(o);
   }
 
@@ -85,6 +90,7 @@ public class KapacitorElementVisitor extends PsiElementVisitor {
 
   public void visitIdentifier(@NotNull KapacitorIdentifier o) {
     visitExpression(o);
+    // visitPsiNamedElement(o);
   }
 
   public void visitLiteral(@NotNull KapacitorLiteral o) {
@@ -105,10 +111,6 @@ public class KapacitorElementVisitor extends PsiElementVisitor {
 
   public void visitStarLiteral(@NotNull KapacitorStarLiteral o) {
     visitLiteral(o);
-  }
-
-  public void visitStatement(@NotNull KapacitorStatement o) {
-    visitPsiElement(o);
   }
 
   public void visitStringLiteral(@NotNull KapacitorStringLiteral o) {

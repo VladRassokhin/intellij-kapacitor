@@ -23,7 +23,10 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
     boolean r;
     b = adapt_builder_(t, b, this, EXTENDS_SETS_);
     Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-    if (t == BOOLEAN_LITERAL) {
+    if (t == PARAMETER_LIST) {
+      r = ParameterList(b, 0);
+    }
+    else if (t == BOOLEAN_LITERAL) {
       r = boolean_literal(b, 0);
     }
     else if (t == DECLARATION) {
@@ -47,9 +50,6 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
     else if (t == STAR_LITERAL) {
       r = star_literal(b, 0);
     }
-    else if (t == STATEMENT) {
-      r = statement(b, 0);
-    }
     else if (t == STRING_LITERAL) {
       r = string_literal(b, 0);
     }
@@ -70,67 +70,67 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
     create_token_set_(BINARY_ADDITION_EXPRESSION, BINARY_AND_EXPRESSION, BINARY_EQUALITY_EXPRESSION, BINARY_MULTIPLY_EXPRESSION,
       BINARY_OR_EXPRESSION, BINARY_RELATIONAL_EXPRESSION, BOOLEAN_LITERAL, CHAIN_AT_EXPRESSION,
       CHAIN_DOT_EXPRESSION, CHAIN_PIPE_EXPRESSION, DURATION_LITERAL, EXPRESSION,
-      IDENTIFIER, LAMBDA_EXPRESSION, LITERAL, NUMBER_LITERAL,
-      PARENTHESIZED_EXPRESSION, PRIMARY_FUNC_EXPRESSION, REFERENCE_LITERAL, REGEX_LITERAL,
+      IDENTIFIER, LAMBDA_EXPRESSION, LITERAL, METHOD_CALL_EXPRESSION,
+      NUMBER_LITERAL, PARENTHESIZED_EXPRESSION, REFERENCE_LITERAL, REGEX_LITERAL,
       STAR_LITERAL, STRING_LIST, STRING_LITERAL, UNARY_EXPRESSION),
   };
 
   /* ********************************************************** */
   // '(' (expression? (',' expression )* )?')'
-  static boolean PrimaryParameterList(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryParameterList")) return false;
+  public static boolean ParameterList(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ParameterList")) return false;
     if (!nextTokenIs(b, L_PAREN)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_);
+    Marker m = enter_section_(b, l, _NONE_, PARAMETER_LIST, null);
     r = consumeToken(b, L_PAREN);
     p = r; // pin = 1
-    r = r && report_error_(b, PrimaryParameterList_1(b, l + 1));
+    r = r && report_error_(b, ParameterList_1(b, l + 1));
     r = p && consumeToken(b, R_PAREN) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
   // (expression? (',' expression )* )?
-  private static boolean PrimaryParameterList_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryParameterList_1")) return false;
-    PrimaryParameterList_1_0(b, l + 1);
+  private static boolean ParameterList_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ParameterList_1")) return false;
+    ParameterList_1_0(b, l + 1);
     return true;
   }
 
   // expression? (',' expression )*
-  private static boolean PrimaryParameterList_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryParameterList_1_0")) return false;
+  private static boolean ParameterList_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ParameterList_1_0")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
-    r = PrimaryParameterList_1_0_0(b, l + 1);
+    r = ParameterList_1_0_0(b, l + 1);
     p = r; // pin = 1
-    r = r && PrimaryParameterList_1_0_1(b, l + 1);
+    r = r && ParameterList_1_0_1(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
   // expression?
-  private static boolean PrimaryParameterList_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryParameterList_1_0_0")) return false;
+  private static boolean ParameterList_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ParameterList_1_0_0")) return false;
     expression(b, l + 1, -1);
     return true;
   }
 
   // (',' expression )*
-  private static boolean PrimaryParameterList_1_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryParameterList_1_0_1")) return false;
+  private static boolean ParameterList_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ParameterList_1_0_1")) return false;
     int c = current_position_(b);
     while (true) {
-      if (!PrimaryParameterList_1_0_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "PrimaryParameterList_1_0_1", c)) break;
+      if (!ParameterList_1_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "ParameterList_1_0_1", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
   // ',' expression
-  private static boolean PrimaryParameterList_1_0_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryParameterList_1_0_1_0")) return false;
+  private static boolean ParameterList_1_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ParameterList_1_0_1_0")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
     r = consumeToken(b, COMMA);
@@ -389,14 +389,14 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // type_declaration | declaration | expression
-  public static boolean statement(PsiBuilder b, int l) {
+  static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, STATEMENT, "<statement>");
+    Marker m = enter_section_(b);
     r = type_declaration(b, l + 1);
     if (!r) r = declaration(b, l + 1);
     if (!r) r = expression(b, l + 1, -1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -453,7 +453,7 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
   // 8: BINARY(ChainPipeExpression)
   // 9: BINARY(ChainDotExpression)
   // 10: BINARY(ChainAtExpression)
-  // 11: POSTFIX(PrimaryFuncExpression)
+  // 11: POSTFIX(MethodCallExpression)
   // 12: ATOM(identifier)
   // 13: PREFIX(UnaryExpression)
   // 14: ATOM(literal)
@@ -516,9 +516,9 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
         r = expression(b, l, 10);
         exit_section_(b, l, m, CHAIN_AT_EXPRESSION, r, true, null);
       }
-      else if (g < 11 && PrimaryParameterList(b, l + 1)) {
+      else if (g < 11 && ParameterList(b, l + 1)) {
         r = true;
-        exit_section_(b, l, m, PRIMARY_FUNC_EXPRESSION, r, true, null);
+        exit_section_(b, l, m, METHOD_CALL_EXPRESSION, r, true, null);
       }
       else {
         exit_section_(b, l, m, null, false, false, null);
@@ -580,9 +580,9 @@ public class KapacitorParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "identifier")) return false;
     if (!nextTokenIsSmart(b, ID)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, IDENTIFIER, "<Identifier>");
     r = consumeTokenSmart(b, ID);
-    exit_section_(b, m, IDENTIFIER, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 

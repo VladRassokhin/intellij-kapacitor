@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface KapacitorTypeDeclaration extends PsiElement {
 
   @NotNull
-  List<KapacitorIdentifier> getIdentifierList();
+  KapacitorIdentifier getVariable();
+
+  @Nullable
+  KapacitorIdentifier getType();
 
 }

@@ -28,8 +28,16 @@ public class KapacitorTypeDeclarationImpl extends ASTWrapperPsiElement implement
 
   @Override
   @NotNull
-  public List<KapacitorIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorIdentifier.class);
+  public KapacitorIdentifier getVariable() {
+    List<KapacitorIdentifier> p1 = PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorIdentifier.class);
+    return p1.get(0);
+  }
+
+  @Override
+  @Nullable
+  public KapacitorIdentifier getType() {
+    List<KapacitorIdentifier> p1 = PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorIdentifier.class);
+    return p1.size() < 2 ? null : p1.get(1);
   }
 
 }

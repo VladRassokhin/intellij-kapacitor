@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public class KapacitorIdentifierImpl extends KapacitorExpressionImpl implements KapacitorIdentifier {
+public class KapacitorIdentifierImpl extends KapacitorIdentifierMixin implements KapacitorIdentifier {
 
   public KapacitorIdentifierImpl(ASTNode node) {
     super(node);

@@ -7,7 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface KapacitorDeclaration extends PsiElement {
 
+  @Nullable
+  KapacitorExpression getValue();
+
   @NotNull
-  List<KapacitorExpression> getExpressionList();
+  KapacitorIdentifier getVariable();
 
 }

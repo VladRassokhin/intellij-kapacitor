@@ -27,9 +27,15 @@ public class KapacitorDeclarationImpl extends ASTWrapperPsiElement implements Ka
   }
 
   @Override
+  @Nullable
+  public KapacitorExpression getValue() {
+    List<KapacitorExpression> p1 = PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
+    return p1.size() < 2 ? null : p1.get(1);
+  }
+
   @NotNull
-  public List<KapacitorExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
+  public KapacitorIdentifier getVariable() {
+    return KapacitorPsiImplUtilJ.getVariable(this);
   }
 
 }

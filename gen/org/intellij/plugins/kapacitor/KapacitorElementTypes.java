@@ -24,13 +24,13 @@ public interface KapacitorElementTypes {
   IElementType IDENTIFIER = new KapacitorElementType("IDENTIFIER");
   IElementType LAMBDA_EXPRESSION = new KapacitorElementType("LAMBDA_EXPRESSION");
   IElementType LITERAL = new KapacitorElementType("LITERAL");
+  IElementType METHOD_CALL_EXPRESSION = new KapacitorElementType("METHOD_CALL_EXPRESSION");
   IElementType NUMBER_LITERAL = new KapacitorElementType("NUMBER_LITERAL");
+  IElementType PARAMETER_LIST = new KapacitorElementType("PARAMETER_LIST");
   IElementType PARENTHESIZED_EXPRESSION = new KapacitorElementType("PARENTHESIZED_EXPRESSION");
-  IElementType PRIMARY_FUNC_EXPRESSION = new KapacitorElementType("PRIMARY_FUNC_EXPRESSION");
   IElementType REFERENCE_LITERAL = new KapacitorElementType("REFERENCE_LITERAL");
   IElementType REGEX_LITERAL = new KapacitorElementType("REGEX_LITERAL");
   IElementType STAR_LITERAL = new KapacitorElementType("STAR_LITERAL");
-  IElementType STATEMENT = new KapacitorElementType("STATEMENT");
   IElementType STRING_LIST = new KapacitorElementType("STRING_LIST");
   IElementType STRING_LITERAL = new KapacitorElementType("STRING_LITERAL");
   IElementType TYPE_DECLARATION = new KapacitorElementType("TYPE_DECLARATION");
@@ -119,14 +119,17 @@ public interface KapacitorElementTypes {
       else if (type == LAMBDA_EXPRESSION) {
         return new KapacitorLambdaExpressionImpl(node);
       }
+      else if (type == METHOD_CALL_EXPRESSION) {
+        return new KapacitorMethodCallExpressionImpl(node);
+      }
       else if (type == NUMBER_LITERAL) {
         return new KapacitorNumberLiteralImpl(node);
       }
+      else if (type == PARAMETER_LIST) {
+        return new KapacitorParameterListImpl(node);
+      }
       else if (type == PARENTHESIZED_EXPRESSION) {
         return new KapacitorParenthesizedExpressionImpl(node);
-      }
-      else if (type == PRIMARY_FUNC_EXPRESSION) {
-        return new KapacitorPrimaryFuncExpressionImpl(node);
       }
       else if (type == REFERENCE_LITERAL) {
         return new KapacitorReferenceLiteralImpl(node);
@@ -136,9 +139,6 @@ public interface KapacitorElementTypes {
       }
       else if (type == STAR_LITERAL) {
         return new KapacitorStarLiteralImpl(node);
-      }
-      else if (type == STATEMENT) {
-        return new KapacitorStatementImpl(node);
       }
       else if (type == STRING_LIST) {
         return new KapacitorStringListImpl(node);

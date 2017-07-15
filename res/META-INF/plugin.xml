@@ -33,6 +33,15 @@
     <lang.commenter language="Kapacitor" implementationClass="org.intellij.plugins.kapacitor.editor.KapacitorCommenter"/>
     <lang.braceMatcher language="Kapacitor" implementationClass="org.intellij.plugins.kapacitor.codeinsight.KapacitorBraceMatcher"/>
 
+    <lang.findUsagesProvider language="Kapacitor" implementationClass="org.intellij.plugins.kapacitor.findUsages.KapacitorFindUsagesProvider"/>
+    <usageTypeProvider implementation="org.intellij.plugins.kapacitor.findUsages.KapacitorUsageTypeProvider"/>
+    <psi.referenceContributor language="Kapacitor" implementation="org.intellij.plugins.kapacitor.psi.KapacitorReferenceContributor"/>
+
+    <lang.elementManipulator forClass="org.intellij.plugins.kapacitor.psi.KapacitorIdentifier"
+                             implementationClass="org.intellij.plugins.kapacitor.psi.KapacitorIdentifierManipulator"/>
+
+    <lang.refactoringSupport language="Kapacitor" implementationClass="org.intellij.plugins.kapacitor.psi.KapacitorRefactoringSupportProvider"/>
+
     <!-- Inject Regexps -->
     <languageInjector implementation="org.intellij.plugins.kapacitor.RegexInjector"/>
 

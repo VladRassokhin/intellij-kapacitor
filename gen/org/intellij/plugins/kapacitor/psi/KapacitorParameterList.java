@@ -4,11 +4,10 @@ package org.intellij.plugins.kapacitor.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNamedElement;
 
-public interface KapacitorIdentifier extends KapacitorExpression, PsiNamedElement {
+public interface KapacitorParameterList extends PsiElement {
 
   @NotNull
-  PsiElement getId();
+  List<KapacitorExpression> getParameters();
 
 }

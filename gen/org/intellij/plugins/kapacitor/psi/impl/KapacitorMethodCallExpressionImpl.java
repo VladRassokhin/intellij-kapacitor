@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public class KapacitorPrimaryFuncExpressionImpl extends KapacitorExpressionImpl implements KapacitorPrimaryFuncExpression {
+public class KapacitorMethodCallExpressionImpl extends KapacitorExpressionImpl implements KapacitorMethodCallExpression {
 
-  public KapacitorPrimaryFuncExpressionImpl(ASTNode node) {
+  public KapacitorMethodCallExpressionImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull KapacitorElementVisitor visitor) {
-    visitor.visitPrimaryFuncExpression(this);
+    visitor.visitMethodCallExpression(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -27,8 +27,8 @@ public class KapacitorPrimaryFuncExpressionImpl extends KapacitorExpressionImpl 
 
   @Override
   @NotNull
-  public List<KapacitorExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
+  public KapacitorExpression getCallee() {
+    return findNotNullChildByClass(KapacitorExpression.class);
   }
 
 }

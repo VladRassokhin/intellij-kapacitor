@@ -25,7 +25,7 @@
   psiClassPrefix = 'Kapacitor'
   psiVisitorName = 'KapacitorElementVisitor'
 
-//  psiImplUtilClass = 'org.intellij.plugins.kapacitor.psi.impl.KapacitorPsiImplUtilJ'
+  psiImplUtilClass = 'org.intellij.plugins.kapacitor.psi.impl.KapacitorPsiImplUtilJ'
   tokenTypeClass = 'org.intellij.plugins.kapacitor.KapacitorTokenType'
 
   tokens = [
@@ -95,9 +95,21 @@
 
 program ::= statement*
 
-statement ::= type_declaration | declaration | expression
-type_declaration ::= "var" identifier identifier
-declaration ::= "var" identifier "=" expression
+private statement ::= type_declaration | declaration | expression
+type_declaration ::= "var" identifier identifier {
+  methods=[
+    identifier=""
+    variable="identifier[0]"
+    type="identifier[1]"
+  ]
+}
+declaration ::= "var" identifier "=" expression {
+  methods=[
+    expression=""
+    value="expression[1]"
+    getVariable
+  ]
+}
 
 expression ::=
     ParenthesizedExpression
@@ -114,7 +126,7 @@ expression ::=
   | ChainPipeExpression
   | ChainDotExpression
   | ChainAtExpression
-  | PrimaryFuncExpression
+  | MethodCallExpression
 
   | identifier
   | UnaryExpression
@@ -143,9 +155,18 @@ ChainPipeExpression ::= expression PIPE expression
 ChainAtExpression ::= expression AT expression
 
 
-PrimaryFuncExpression ::= expression PrimaryParameterList
-private PrimaryParameterList ::='(' (expression? (',' expression )* )?')' {
+MethodCallExpression ::= expression ParameterList {
+  methods=[
+    Callee="expression"
+    ParameterList="PrimaryFuncParameterList"
+  ]
+}
+ParameterList ::='(' (expression? (',' expression )* )?')' {
   pin(".*")=1
+  methods=[
+    expression=""
+    Parameters="expression"
+  ]
 }
 StringList ::= '[' StringListItem* ']'  {
   pin=1
@@ -168,6 +189,11 @@ literal ::= number_literal | string_literal | boolean_literal | duration_literal
 //ascii_letter      ::= 'regexp:[a-zA-Z]'
 //letter            ::= ascii_letter | "_"
 identifier        ::= ID //letter (letter | digit)*
+{
+  name="Identifier"
+  implements="com.intellij.psi.PsiNamedElement"
+  mixin="org.intellij.plugins.kapacitor.psi.impl.KapacitorIdentifierMixin"
+}
 boolean_literal   ::= TRUE | FALSE // "TRUE" | "FALSE"
 //int_literal       ::= INTEGER // 'regexp:[1-9]' digit*
 number_literal    ::= NUMBER // digit+ ("." digit*)*

@@ -1,8 +1,8 @@
 KapacitorFile: a.tick
-  KapacitorStatementImpl(STATEMENT)
-    KapacitorPrimaryFuncExpressionImpl(PRIMARY_FUNC_EXPRESSION)
-      KapacitorIdentifierImpl(IDENTIFIER)
-        PsiElement(ID)('string')
+  KapacitorMethodCallExpressionImpl(METHOD_CALL_EXPRESSION)
+    KapacitorIdentifierImpl(IDENTIFIER)
+      PsiElement(ID)('string')
+    KapacitorParameterListImpl(PARAMETER_LIST)
       PsiElement(()('(')
       KapacitorDurationLiteralImpl(DURATION_LITERAL)
         PsiElement(DURATION)('5m')
