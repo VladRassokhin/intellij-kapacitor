@@ -33,6 +33,7 @@ class KapacitorColorsPage : ColorSettingsPage, InspectionColorSettingsPage, Disp
         AttributesDescriptor("Braces and Operators//Brackets", KapacitorSyntaxHighlighterFactory.Kapacitor_BRACKETS),
         AttributesDescriptor("Braces and Operators//Braces", KapacitorSyntaxHighlighterFactory.Kapacitor_PARENTHESES),
         AttributesDescriptor("Braces and Operators//Comma", KapacitorSyntaxHighlighterFactory.Kapacitor_COMMA),
+        AttributesDescriptor("Braces and Operators//Chains", KapacitorSyntaxHighlighterFactory.Kapacitor_CHAINS),
         AttributesDescriptor("Braces and Operators//Operation sign", KapacitorSyntaxHighlighterFactory.Kapacitor_OPERATION_SIGN),
 
         AttributesDescriptor("Number", KapacitorSyntaxHighlighterFactory.Kapacitor_NUMBER),
@@ -41,6 +42,7 @@ class KapacitorColorsPage : ColorSettingsPage, InspectionColorSettingsPage, Disp
 
         AttributesDescriptor("Comments", KapacitorSyntaxHighlighterFactory.Kapacitor_LINE_COMMENT),
 
+        AttributesDescriptor("String//References", KapacitorSyntaxHighlighterFactory.Kapacitor_REFERENCE),
         AttributesDescriptor("String//String text", KapacitorSyntaxHighlighterFactory.Kapacitor_STRING),
         AttributesDescriptor("String//Valid escape sequence", KapacitorSyntaxHighlighterFactory.Kapacitor_VALID_ESCAPE),
         AttributesDescriptor("String//Invalid escape sequence", KapacitorSyntaxHighlighterFactory.Kapacitor_INVALID_ESCAPE)
@@ -58,25 +60,39 @@ class KapacitorColorsPage : ColorSettingsPage, InspectionColorSettingsPage, Disp
   }
 
   override fun getDemoText(): String {
-    return """/*
-  Here's simple Kapacitor code to show you syntax highlighter.
-  Suggestions are welcome at https://github.com/VladRassokhin/intellij-hcl/issues
-*/
-<pk>name</pk> = value
-// Simple single line comment
-<bt1>block</bt1> <bt2>with</bt2> <btO>five</btO> <btO>types</btO> <btO>and</btO> <bn>'name'</bn> {
-  <pk>array</pk> = [ 'a', 100, "b", 10.5e-42, true, false ]
-  <pk>empty_array</pk> = []
-  <pk>empty_object</pk> = {}
-  # Yet another comment style
-  <pk>strings</pk> = {
-    <pk>"something"</pk> = "\"Quoted Yep!\""
-    <pk>bad</pk> = "Invalid escaping:\c"
-    <pk>'good'</pk> = "Valid escaping:\"\n\"\"
-  }
-}
-<bon>block_with_only_one_name</bon> {
-}
+    return """
+// Parameters
+var info = '{info_level}'
+var warn = '{warn_level}'
+var crit = '{crit_level}'
+var infoSig = 2.5
+var warnSig = 3
+var critSig = 3.5
+var period = 10s
+var every = 10s
+
+// Dataframe
+var data = batch
+  |query('''{InfluxQL_Query}''')
+    .period(period)
+    .every(every)
+    .groupBy('host')
+
+// Thresholds
+var alert = data
+  |eval(lambda: sigma("stat"))
+    .as('sigma')
+    .keep()
+  |alert()
+    .id('{{ index .Tags "host"}}/{alert_metric}')
+    .message('{{ .ID }}:{{ index .Fields "stat" }}')
+    .info(lambda: "stat" > info OR "sigma" > infoSig)
+    .warn(lambda: "stat" > warn OR "sigma" > warnSig)
+    .crit(lambda: "stat" > crit OR "sigma" > critSig)
+
+// Alert
+alert
+  .log('/tmp/{alert_name}_log.txt').simple_regex(/.*/)
 """
   }
 
