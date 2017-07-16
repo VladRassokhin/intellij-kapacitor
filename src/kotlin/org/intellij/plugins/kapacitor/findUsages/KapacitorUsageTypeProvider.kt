@@ -26,8 +26,8 @@ class KapacitorUsageTypeProvider : UsageTypeProvider {
     if (element !is KapacitorExpression) return null
     if (element is KapacitorIdentifier) {
       val parent = (element as PsiElement).parent
-      if (parent is KapacitorDeclaration && parent.variable === element) {
-        return UsageType.WRITE
+      if (parent is KapacitorDeclaration) {
+        return if (parent.variable === element) UsageType.WRITE else UsageType.READ
       }
       if (parent is KapacitorTypeDeclaration) {
         if (parent.variable === element) {

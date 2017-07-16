@@ -37,7 +37,8 @@ class KapacitorReferenceContributor : PsiReferenceContributor() {
             .inFile(KapacitorConfigFile)
             .withParent(StandardPatterns.or(
                 psiElement(KapacitorBinaryExpression::class.java),
-                psiElement(KapacitorParameterList::class.java)
+                psiElement(KapacitorParameterList::class.java),
+                psiElement(KapacitorDeclaration::class.java)
             ))
         , ParameterReferenceProvider)
     registrar.registerReferenceProvider(
@@ -55,9 +56,10 @@ object ParameterReferenceProvider : PsiReferenceProvider() {
     val parent = element.parent
     if (parent is KapacitorChainExpression) {
       if (parent.lOperand === element) return arrayOf(ParameterReferenceLazyReference(element))
-    }
-    if (parent is KapacitorParameterList) return arrayOf(ParameterReferenceLazyReference(element))
-    if (parent is KapacitorBinaryExpression) return arrayOf(ParameterReferenceLazyReference(element))
+    } else if (parent is KapacitorDeclaration) {
+      return arrayOf(ParameterReferenceLazyReference(element))
+    } else if (parent is KapacitorParameterList) return arrayOf(ParameterReferenceLazyReference(element))
+    else if (parent is KapacitorBinaryExpression) return arrayOf(ParameterReferenceLazyReference(element))
     return PsiReference.EMPTY_ARRAY
   }
 
@@ -66,13 +68,23 @@ object ParameterReferenceProvider : PsiReferenceProvider() {
 class ParameterReferenceLazyReference(element: KapacitorIdentifier) : PsiReferenceBase.Poly<KapacitorIdentifier>(element) {
   override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
     val file = element.containingFile ?: return emptyArray()
-    val found = ArrayList<KapacitorIdentifier>()
+    val values = ArrayList<KapacitorIdentifier>()
+    val types = ArrayList<KapacitorIdentifier>()
     file.acceptChildren(object : KapacitorElementVisitor() {
       override fun visitDeclaration(o: KapacitorDeclaration) {
-        if (o.variable.name == element.name) found.add(o.variable)
+        if (o.variable.name == element.name) values.add(o.variable)
+      }
+
+      override fun visitTypeDeclaration(o: KapacitorTypeDeclaration) {
+        if (o.variable.name == element.name) types.add(o.variable)
       }
     })
-    return found.map { PsiElementResolveResult(it) }.toTypedArray()
+    values.remove(element)
+    types.remove(element)
+    if (types.isNotEmpty()) {
+      return types.map { PsiElementResolveResult(it) }.toTypedArray()
+    }
+    return values.map { PsiElementResolveResult(it) }.toTypedArray()
   }
 
 
@@ -81,6 +93,10 @@ class ParameterReferenceLazyReference(element: KapacitorIdentifier) : PsiReferen
     val found = ArrayList<KapacitorIdentifier>()
     file.acceptChildren(object : KapacitorElementVisitor() {
       override fun visitDeclaration(o: KapacitorDeclaration) {
+        found.add(o.variable)
+      }
+
+      override fun visitTypeDeclaration(o: KapacitorTypeDeclaration) {
         found.add(o.variable)
       }
     })

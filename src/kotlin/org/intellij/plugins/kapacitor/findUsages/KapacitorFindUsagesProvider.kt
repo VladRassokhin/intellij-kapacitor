@@ -36,28 +36,29 @@ class KapacitorFindUsagesProvider : FindUsagesProvider {
     if (psiElement is KapacitorIdentifier) {
       if (KapacitorPsiUtil.isVariableDeclaration(psiElement)) return true
       val parent = (psiElement as PsiElement).parent
-      if (parent is KapacitorDeclaration) {
-        return psiElement === parent.value
-      }
-      if (parent is KapacitorParameterList) {
-        return true
+      return when (parent) {
+        is KapacitorDeclaration -> true
+        is KapacitorParameterList -> true
+        is KapacitorBinaryExpression -> true
+        is KapacitorChainExpression -> parent.lOperand === psiElement
+        else -> false
       }
     }
-    return true
+    return false
   }
 
   override fun getType(element: PsiElement): String {
-//    if (element is KapacitorDeclaration) {
-//      return "Declaration"
-//    }
-//    if (element is KapacitorTypeDeclaration) {
-//      return "Type Declaration"
-//    }
-    if (element is KapacitorIdentifier /*|| element is KapacitorStringLiteral || element is KapacitorReferenceLiteral*/) {
+    if (element is KapacitorIdentifier) {
       if (KapacitorPsiUtil.isVariableDeclaration(element)) {
         return "Variable"
       }
-      if (element.parent is KapacitorParameterList) return "Method Parameter"
+      val parent = (element as PsiElement).parent
+      when (parent) {
+        is KapacitorDeclaration -> return "Variable value"
+        is KapacitorParameterList -> return "Parameter"
+        is KapacitorBinaryExpression -> return "Operand"
+        is KapacitorChainExpression -> if (parent.lOperand === element) return "Chain Source"
+      }
     }
     if (element is PsiNamedElement) {
       return "<Untyped PsiNamedElement${element.javaClass.name}>"
