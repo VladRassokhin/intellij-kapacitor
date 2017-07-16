@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public class KapacitorChainAtExpressionImpl extends KapacitorBinaryExpressionImpl implements KapacitorChainAtExpression {
+public class KapacitorChainAtExpressionImpl extends KapacitorChainExpressionImpl implements KapacitorChainAtExpression {
 
   public KapacitorChainAtExpressionImpl(ASTNode node) {
     super(node);

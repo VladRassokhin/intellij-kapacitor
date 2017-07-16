@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
 import org.intellij.plugins.kapacitor.psi.*;
 
-public class KapacitorChainPipeExpressionImpl extends KapacitorChainExpressionImpl implements KapacitorChainPipeExpression {
+public class KapacitorChainExpressionImpl extends KapacitorBinaryExpressionImpl implements KapacitorChainExpression {
 
-  public KapacitorChainPipeExpressionImpl(ASTNode node) {
+  public KapacitorChainExpressionImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull KapacitorElementVisitor visitor) {
-    visitor.visitChainPipeExpression(this);
+    visitor.visitChainExpression(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

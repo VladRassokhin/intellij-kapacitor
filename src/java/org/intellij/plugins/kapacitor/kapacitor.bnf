@@ -88,7 +88,7 @@
   ]
 
   extends(".*_literal")=literal
-  extends("Chain.+Expression")=BinaryExpression
+  extends("Chain.+Expression")=ChainExpression
   extends("Binary.+Expression")=BinaryExpression
   extends(".*Expression|identifier|literal")=expression
 }
@@ -138,6 +138,12 @@ LambdaExpression::="lambda:" expression
 ParenthesizedExpression::= '(' <<push 0>> expression ')' <<pop>>
 fake BinaryExpression ::= expression+ {
   mixin="org.intellij.plugins.kapacitor.psi.impl.BinaryExpressionMixin"
+  methods=[
+    expression="" // Magic hack
+    LOperand="expression[0]"
+    ROperand="expression[1]"
+    getOperationSign
+  ]
 }
 BinaryRelationalExpression::= expression relationalOp expression
 BinaryEqualityExpression::= expression equalityOp expression
@@ -150,6 +156,9 @@ BinaryMultiplyExpression::= expression mulOp expression
 
 UnaryExpression::= unaryOp expression
 
+fake ChainExpression ::= expression+ {
+  extends=BinaryExpression
+}
 ChainDotExpression ::= expression DOT expression
 ChainPipeExpression ::= expression PIPE expression
 ChainAtExpression ::= expression AT expression

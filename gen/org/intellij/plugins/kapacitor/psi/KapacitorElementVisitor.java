@@ -37,15 +37,19 @@ public class KapacitorElementVisitor extends PsiElementVisitor {
   }
 
   public void visitChainAtExpression(@NotNull KapacitorChainAtExpression o) {
-    visitBinaryExpression(o);
+    visitChainExpression(o);
   }
 
   public void visitChainDotExpression(@NotNull KapacitorChainDotExpression o) {
+    visitChainExpression(o);
+  }
+
+  public void visitChainExpression(@NotNull KapacitorChainExpression o) {
     visitBinaryExpression(o);
   }
 
   public void visitChainPipeExpression(@NotNull KapacitorChainPipeExpression o) {
-    visitBinaryExpression(o);
+    visitChainExpression(o);
   }
 
   public void visitLambdaExpression(@NotNull KapacitorLambdaExpression o) {

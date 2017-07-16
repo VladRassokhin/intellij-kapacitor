@@ -9,6 +9,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.intellij.plugins.kapacitor.KapacitorElementTypes.*;
 import org.intellij.plugins.kapacitor.psi.*;
+import com.intellij.psi.tree.IElementType;
 
 public class KapacitorBinaryExpressionImpl extends BinaryExpressionMixin implements KapacitorBinaryExpression {
 
@@ -27,8 +28,21 @@ public class KapacitorBinaryExpressionImpl extends BinaryExpressionMixin impleme
 
   @Override
   @NotNull
-  public List<KapacitorExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
+  public KapacitorExpression getLOperand() {
+    List<KapacitorExpression> p1 = PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
+    return p1.get(0);
+  }
+
+  @Override
+  @Nullable
+  public KapacitorExpression getROperand() {
+    List<KapacitorExpression> p1 = PsiTreeUtil.getChildrenOfTypeAsList(this, KapacitorExpression.class);
+    return p1.size() < 2 ? null : p1.get(1);
+  }
+
+  @NotNull
+  public IElementType getOperationSign() {
+    return KapacitorPsiImplUtilJ.getOperationSign(this);
   }
 
 }

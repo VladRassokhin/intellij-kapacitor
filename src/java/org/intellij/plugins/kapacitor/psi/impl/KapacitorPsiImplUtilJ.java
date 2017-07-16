@@ -15,9 +15,10 @@
  */
 package org.intellij.plugins.kapacitor.psi.impl;
 
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.intellij.plugins.kapacitor.psi.KapacitorBinaryExpression;
 import org.intellij.plugins.kapacitor.psi.KapacitorDeclaration;
-import org.intellij.plugins.kapacitor.psi.KapacitorExpression;
 import org.intellij.plugins.kapacitor.psi.KapacitorIdentifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,5 +30,10 @@ public class KapacitorPsiImplUtilJ {
   public static KapacitorIdentifier getVariable(KapacitorDeclaration declaration) {
     List<KapacitorIdentifier> p1 = PsiTreeUtil.getChildrenOfTypeAsList(declaration, KapacitorIdentifier.class);
     return p1.get(0);
+  }
+
+  @NotNull
+  public static IElementType getOperationSign(KapacitorBinaryExpression expression) {
+    return expression.getNode().getFirstChildNode().getTreeNext().getElementType();
   }
 }
