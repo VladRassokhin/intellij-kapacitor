@@ -15,8 +15,10 @@
  */
 package org.intellij.plugins.kapacitor.psi
 
-import com.intellij.patterns.PlatformPatterns
+import com.intellij.patterns.PlatformPatterns.psiElement
+import com.intellij.patterns.PlatformPatterns.psiFile
 import com.intellij.patterns.PsiFilePattern
+import com.intellij.patterns.StandardPatterns
 import com.intellij.psi.*
 import com.intellij.util.ProcessingContext
 import org.intellij.plugins.kapacitor.KapacitorLanguage
@@ -25,16 +27,24 @@ import java.util.*
 class KapacitorReferenceContributor : PsiReferenceContributor() {
   companion object {
     val KapacitorConfigFile: PsiFilePattern.Capture<KapacitorFile> =
-        PlatformPatterns.psiFile(KapacitorFile::class.java)
+        psiFile(KapacitorFile::class.java)
             .withLanguage(KapacitorLanguage)
   }
 
   override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
-
     registrar.registerReferenceProvider(
-        PlatformPatterns.psiElement(KapacitorIdentifier::class.java)
+        psiElement(KapacitorIdentifier::class.java)
             .inFile(KapacitorConfigFile)
-            .withParent(PlatformPatterns.psiElement(KapacitorParameterList::class.java))
+            .withParent(StandardPatterns.or(
+                psiElement(KapacitorBinaryExpression::class.java),
+                psiElement(KapacitorParameterList::class.java)
+            ))
+        , ParameterReferenceProvider)
+    registrar.registerReferenceProvider(
+        psiElement(KapacitorIdentifier::class.java)
+            .inFile(KapacitorConfigFile)
+            .withParent(psiElement(KapacitorChainExpression::class.java))
+            .isFirstAcceptedChild(psiElement())
         , ParameterReferenceProvider)
   }
 }
@@ -42,8 +52,13 @@ class KapacitorReferenceContributor : PsiReferenceContributor() {
 object ParameterReferenceProvider : PsiReferenceProvider() {
   override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {
     if (element !is KapacitorIdentifier) return PsiReference.EMPTY_ARRAY
-    if (element.parent !is KapacitorParameterList) return PsiReference.EMPTY_ARRAY
-    return arrayOf(ParameterReferenceLazyReference(element))
+    val parent = element.parent
+    if (parent is KapacitorChainExpression) {
+      if (parent.lOperand === element) return arrayOf(ParameterReferenceLazyReference(element))
+    }
+    if (parent is KapacitorParameterList) return arrayOf(ParameterReferenceLazyReference(element))
+    if (parent is KapacitorBinaryExpression) return arrayOf(ParameterReferenceLazyReference(element))
+    return PsiReference.EMPTY_ARRAY
   }
 
 }

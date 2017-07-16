@@ -35,6 +35,12 @@ class KapacitorUsageTypeProvider : UsageTypeProvider {
         }
       } else if (parent is KapacitorParameterList) {
         return UsageType.READ
+      } else if (parent is KapacitorChainExpression) {
+        if (parent.lOperand === element) {
+          return UsageType.READ
+        }
+      } else if (parent is KapacitorBinaryExpression) {
+        return UsageType.READ
       }
     }
     return null
