@@ -30,7 +30,7 @@ ID=[a-zA-Z_][0-9a-zA-Z_]*
 NUMBER=-?([0-9]+(\.[0-9]+)?)|(\.[0-9]+)
 DURATION=[1-9][0-9]*([uµsmhdw]|ms)
 SINGLE_QUOTED_STRING='([^\\'\r\n]|\\[^\r\n])*'
-TRIPLE_QUOTED_STRING='''([^\\\r\n]|\\[^\r\n])*'''
+TRIPLE_QUOTED_STRING='''([^']+'{0,2})*'''
 REGEX_STRING="/"([^\\\r\n]|\\[^\r\n])*"/"
 REFERENCE_STRING=\"([^\\\"\r\n]|\\[^\r\n])*\"
 

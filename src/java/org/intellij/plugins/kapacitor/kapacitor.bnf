@@ -81,7 +81,7 @@
 
 // TODO:Add tailing '?' to strings
     SINGLE_QUOTED_STRING="regexp:'([^\\\'\r\n]|\\[^\r\n])*'"
-    TRIPLE_QUOTED_STRING="regexp:'''([^\\\r\n]|\\[^\r\n])*'''"
+    TRIPLE_QUOTED_STRING="regexp:'''([^']+'{0,2})*'''"
 
     REGEX_STRING="regexp:/([^\\\r\n]|\\[^\r\n])*/"
     REFERENCE_STRING="regexp:\"([^\\\"\r\n]|\\[^\r\n])*\""
