@@ -76,10 +76,18 @@ public class KapacitorLexerTest extends BaseLexerTestCase {
     doTest("'''s'tr'''", "TRIPLE_QUOTED_STRING (''''s'tr'''')");
     doTest("'''s\\'tr'''", "TRIPLE_QUOTED_STRING (''''s\\'tr'''')");
 
-    doTest("'''s\nt\nr'''", "TRIPLE_QUOTED_STRING (''''s\\nt\\nr'''')");
-    doTest("'''s\\nt\\nr'''", "TRIPLE_QUOTED_STRING (''''s\\nt\\nr'''')");
+    doTest("'a''b'", "SINGLE_QUOTED_STRING (''a'')\nSINGLE_QUOTED_STRING (''b'')");
+    doTest("'a'\n'b'", "SINGLE_QUOTED_STRING (''a'')\nWHITE_SPACE ('\\n')\nSINGLE_QUOTED_STRING (''b'')");
 
     doTest("'''x'''\n'''y'''","TRIPLE_QUOTED_STRING (''''x'''')\nWHITE_SPACE ('\\n')\nTRIPLE_QUOTED_STRING (''''y'''')");
+  }
+
+  public void testMultilineStrings() throws Exception {
+    doTest("'s\nt\nr'", "SINGLE_QUOTED_STRING (''s\\nt\\nr'')");
+    doTest("'s\\nt\\nr'", "SINGLE_QUOTED_STRING (''s\\nt\\nr'')");
+
+    doTest("'''s\nt\nr'''", "TRIPLE_QUOTED_STRING (''''s\\nt\\nr'''')");
+    doTest("'''s\\nt\\nr'''", "TRIPLE_QUOTED_STRING (''''s\\nt\\nr'''')");
   }
 
   public void testRegex() throws Exception {

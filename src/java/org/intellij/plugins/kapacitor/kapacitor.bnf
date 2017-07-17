@@ -80,7 +80,7 @@
     DURATION='regexp:[1-9]\d*([uµsmhdw]|ms)'
 
 // TODO:Add tailing '?' to strings
-    SINGLE_QUOTED_STRING="regexp:'([^\\\'\r\n]|\\[^\r\n])*'"
+    SINGLE_QUOTED_STRING="regexp:'([^\\\']|\\.)*'"
     TRIPLE_QUOTED_STRING="regexp:'''([^']+'{0,2})*'''"
 
     REGEX_STRING="regexp:/([^\\\r\n]|\\[^\r\n])*/"
