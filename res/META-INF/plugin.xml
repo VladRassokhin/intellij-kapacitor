@@ -10,7 +10,10 @@
 
   <change-notes><![CDATA[
     <h4>0.1.0 (UNRELEASED)</h4>
-    <p>Basic language support</p>
+    <p>Basic language support with syntax highlighting</p>
+    <p>Simple Find Usages support for variables</p>
+    <p>Commenter (Cmd/Ctrl + /)</p>
+    <p>Matching braces helper: closing brace/paren added when open one inputed</p>
     ]]>
   </change-notes>
 
