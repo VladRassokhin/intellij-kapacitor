@@ -1,9 +1,9 @@
-KapacitorFile: a.tick
-  KapacitorMethodCallExpressionImpl(METHOD_CALL_EXPRESSION)
-    KapacitorIdentifierImpl(IDENTIFIER)
+TickScriptFile: a.tick
+  TickScriptMethodCallExpressionImpl(METHOD_CALL_EXPRESSION)
+    TickScriptIdentifierImpl(IDENTIFIER)
       PsiElement(ID)('string')
-    KapacitorParameterListImpl(PARAMETER_LIST)
+    TickScriptParameterListImpl(PARAMETER_LIST)
       PsiElement(()('(')
-      KapacitorDurationLiteralImpl(DURATION_LITERAL)
+      TickScriptDurationLiteralImpl(DURATION_LITERAL)
         PsiElement(DURATION)('5m')
       PsiElement())(')')

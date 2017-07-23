@@ -22,13 +22,13 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 @TestDataPath("$CONTENT_ROOT/test-data/psi/")
-public class KapacitorParserTest extends ParsingTestCase {
-  private KapacitorParserTest(@NonNls @NotNull String dataPath, @NotNull String fileExt, final boolean lowercaseFirstLetter, @NotNull ParserDefinition... definitions) {
+public class TickScriptParserTest extends ParsingTestCase {
+  private TickScriptParserTest(@NonNls @NotNull String dataPath, @NotNull String fileExt, final boolean lowercaseFirstLetter, @NotNull ParserDefinition... definitions) {
     super(dataPath, fileExt, lowercaseFirstLetter, definitions);
   }
 
-  public KapacitorParserTest() {
-    this("psi", "tick", false, new KapacitorParserDefinition());
+  public TickScriptParserTest() {
+    this("psi", "tick", false, new TickScriptParserDefinition());
   }
 
   @Override

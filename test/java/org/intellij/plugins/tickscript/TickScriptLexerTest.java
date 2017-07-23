@@ -17,11 +17,11 @@ package org.intellij.plugins.tickscript;
 
 import com.intellij.lexer.Lexer;
 
-public class KapacitorLexerTest extends BaseLexerTestCase {
+public class TickScriptLexerTest extends BaseLexerTestCase {
 
   @Override
   protected Lexer createLexer() {
-    return new KapacitorLexer();
+    return new TickScriptLexer();
   }
 
   @Override
