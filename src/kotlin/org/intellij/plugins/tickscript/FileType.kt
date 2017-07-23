@@ -26,9 +26,9 @@ object TickScriptFileType : LanguageFileType(TickScriptLanguage) {
 
   override fun getDefaultExtension() = DEFAULT_EXTENSION
 
-  override fun getDescription() = "TickScript TICKscript" // TODO: Better one
+  override fun getDescription() = "Kapacitor TICKscript" // TODO: Better one
 
-  override fun getName() = "TickScript"
+  override fun getName() = "TICKscript"
 
 }
 
