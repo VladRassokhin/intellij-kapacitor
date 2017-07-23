@@ -20,26 +20,26 @@ import com.intellij.usages.impl.rules.UsageType
 import com.intellij.usages.impl.rules.UsageTypeProvider
 import org.intellij.plugins.tickscript.psi.*
 
-class KapacitorUsageTypeProvider : UsageTypeProvider {
+class TickScriptUsageTypeProvider : UsageTypeProvider {
   override fun getUsageType(element: PsiElement?): UsageType? {
     if (element == null) return null
-    if (element !is KapacitorExpression) return null
-    if (element is KapacitorIdentifier) {
+    if (element !is TickScriptExpression) return null
+    if (element is TickScriptIdentifier) {
       val parent = (element as PsiElement).parent
-      if (parent is KapacitorDeclaration) {
+      if (parent is TickScriptDeclaration) {
         return if (parent.variable === element) UsageType.WRITE else UsageType.READ
       }
-      if (parent is KapacitorTypeDeclaration) {
+      if (parent is TickScriptTypeDeclaration) {
         if (parent.variable === element) {
           return UsageType.CLASS_LOCAL_VAR_DECLARATION
         }
-      } else if (parent is KapacitorParameterList) {
+      } else if (parent is TickScriptParameterList) {
         return UsageType.READ
-      } else if (parent is KapacitorChainExpression) {
+      } else if (parent is TickScriptChainExpression) {
         if (parent.lOperand === element) {
           return UsageType.READ
         }
-      } else if (parent is KapacitorBinaryExpression) {
+      } else if (parent is TickScriptBinaryExpression) {
         return UsageType.READ
       }
     }

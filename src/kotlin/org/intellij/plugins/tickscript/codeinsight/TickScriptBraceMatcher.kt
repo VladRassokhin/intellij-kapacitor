@@ -19,9 +19,9 @@ import com.intellij.lang.BracePair
 import com.intellij.lang.PairedBraceMatcher
 import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IElementType
-import org.intellij.plugins.tickscript.KapacitorElementTypes.*
+import org.intellij.plugins.tickscript.TickScriptElementTypes.*
 
-class KapacitorBraceMatcher : PairedBraceMatcher {
+class TickScriptBraceMatcher : PairedBraceMatcher {
   override fun getCodeConstructStart(file: PsiFile?, openingBraceOffset: Int): Int {
     return openingBraceOffset
   }

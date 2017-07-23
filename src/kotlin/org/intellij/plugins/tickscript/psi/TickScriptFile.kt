@@ -17,5 +17,5 @@ package org.intellij.plugins.tickscript.psi
 
 import com.intellij.psi.PsiFile
 
-interface KapacitorFile : KapacitorElement, PsiFile {
+interface TickScriptFile : TickScriptElement, PsiFile {
 }

@@ -13,16 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.intellij.plugins.tickscript.findUsages
+package org.intellij.plugins.tickscript
 
-import com.intellij.lang.cacheBuilder.DefaultWordsScanner
-import com.intellij.psi.tree.TokenSet
-import org.intellij.plugins.tickscript.KapacitorElementTypes
-import org.intellij.plugins.tickscript.KapacitorLexer
-import org.intellij.plugins.tickscript.KapacitorParserDefinition
+import com.intellij.lexer.FlexAdapter
 
-class KapacitorWordScanner(lexer: KapacitorLexer) : DefaultWordsScanner(lexer, TokenSet.create(KapacitorElementTypes.IDENTIFIER), KapacitorParserDefinition.COMMENTARIES, KapacitorParserDefinition.STRING_LITERALS) {
-  init {
-    setMayHaveFileRefsInLiterals(true)
-  }
-}
+class TickScriptLexer : FlexAdapter(_TickScriptLexer())

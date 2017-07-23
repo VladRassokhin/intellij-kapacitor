@@ -21,30 +21,30 @@ import com.intellij.patterns.PsiFilePattern
 import com.intellij.patterns.StandardPatterns
 import com.intellij.psi.*
 import com.intellij.util.ProcessingContext
-import org.intellij.plugins.tickscript.KapacitorLanguage
+import org.intellij.plugins.tickscript.TickScriptLanguage
 import java.util.*
 
-class KapacitorReferenceContributor : PsiReferenceContributor() {
+class TickScriptReferenceContributor : PsiReferenceContributor() {
   companion object {
-    val KapacitorConfigFile: PsiFilePattern.Capture<KapacitorFile> =
-        psiFile(KapacitorFile::class.java)
-            .withLanguage(KapacitorLanguage)
+    val TickScriptConfigFile: PsiFilePattern.Capture<TickScriptFile> =
+        psiFile(TickScriptFile::class.java)
+            .withLanguage(TickScriptLanguage)
   }
 
   override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
     registrar.registerReferenceProvider(
-        psiElement(KapacitorIdentifier::class.java)
-            .inFile(KapacitorConfigFile)
+        psiElement(TickScriptIdentifier::class.java)
+            .inFile(TickScriptConfigFile)
             .withParent(StandardPatterns.or(
-                psiElement(KapacitorBinaryExpression::class.java),
-                psiElement(KapacitorParameterList::class.java),
-                psiElement(KapacitorDeclaration::class.java)
+                psiElement(TickScriptBinaryExpression::class.java),
+                psiElement(TickScriptParameterList::class.java),
+                psiElement(TickScriptDeclaration::class.java)
             ))
         , ParameterReferenceProvider)
     registrar.registerReferenceProvider(
-        psiElement(KapacitorIdentifier::class.java)
-            .inFile(KapacitorConfigFile)
-            .withParent(psiElement(KapacitorChainExpression::class.java))
+        psiElement(TickScriptIdentifier::class.java)
+            .inFile(TickScriptConfigFile)
+            .withParent(psiElement(TickScriptChainExpression::class.java))
             .isFirstAcceptedChild(psiElement())
         , ParameterReferenceProvider)
   }
@@ -52,30 +52,30 @@ class KapacitorReferenceContributor : PsiReferenceContributor() {
 
 object ParameterReferenceProvider : PsiReferenceProvider() {
   override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {
-    if (element !is KapacitorIdentifier) return PsiReference.EMPTY_ARRAY
+    if (element !is TickScriptIdentifier) return PsiReference.EMPTY_ARRAY
     val parent = element.parent
-    if (parent is KapacitorChainExpression) {
+    if (parent is TickScriptChainExpression) {
       if (parent.lOperand === element) return arrayOf(ParameterReferenceLazyReference(element))
-    } else if (parent is KapacitorDeclaration) {
+    } else if (parent is TickScriptDeclaration) {
       return arrayOf(ParameterReferenceLazyReference(element))
-    } else if (parent is KapacitorParameterList) return arrayOf(ParameterReferenceLazyReference(element))
-    else if (parent is KapacitorBinaryExpression) return arrayOf(ParameterReferenceLazyReference(element))
+    } else if (parent is TickScriptParameterList) return arrayOf(ParameterReferenceLazyReference(element))
+    else if (parent is TickScriptBinaryExpression) return arrayOf(ParameterReferenceLazyReference(element))
     return PsiReference.EMPTY_ARRAY
   }
 
 }
 
-class ParameterReferenceLazyReference(element: KapacitorIdentifier) : PsiReferenceBase.Poly<KapacitorIdentifier>(element) {
+class ParameterReferenceLazyReference(element: TickScriptIdentifier) : PsiReferenceBase.Poly<TickScriptIdentifier>(element) {
   override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
     val file = element.containingFile ?: return emptyArray()
-    val values = ArrayList<KapacitorIdentifier>()
-    val types = ArrayList<KapacitorIdentifier>()
-    file.acceptChildren(object : KapacitorElementVisitor() {
-      override fun visitDeclaration(o: KapacitorDeclaration) {
+    val values = ArrayList<TickScriptIdentifier>()
+    val types = ArrayList<TickScriptIdentifier>()
+    file.acceptChildren(object : TickScriptElementVisitor() {
+      override fun visitDeclaration(o: TickScriptDeclaration) {
         if (o.variable.name == element.name) values.add(o.variable)
       }
 
-      override fun visitTypeDeclaration(o: KapacitorTypeDeclaration) {
+      override fun visitTypeDeclaration(o: TickScriptTypeDeclaration) {
         if (o.variable.name == element.name) types.add(o.variable)
       }
     })
@@ -90,13 +90,13 @@ class ParameterReferenceLazyReference(element: KapacitorIdentifier) : PsiReferen
 
   override fun getVariants(): Array<Any> {
     val file = element.containingFile ?: return emptyArray()
-    val found = ArrayList<KapacitorIdentifier>()
-    file.acceptChildren(object : KapacitorElementVisitor() {
-      override fun visitDeclaration(o: KapacitorDeclaration) {
+    val found = ArrayList<TickScriptIdentifier>()
+    file.acceptChildren(object : TickScriptElementVisitor() {
+      override fun visitDeclaration(o: TickScriptDeclaration) {
         found.add(o.variable)
       }
 
-      override fun visitTypeDeclaration(o: KapacitorTypeDeclaration) {
+      override fun visitTypeDeclaration(o: TickScriptTypeDeclaration) {
         found.add(o.variable)
       }
     })

@@ -19,28 +19,28 @@ import com.intellij.lang.cacheBuilder.WordsScanner
 import com.intellij.lang.findUsages.FindUsagesProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
-import org.intellij.plugins.tickscript.KapacitorLexer
+import org.intellij.plugins.tickscript.TickScriptLexer
 import org.intellij.plugins.tickscript.psi.*
 
-class KapacitorFindUsagesProvider : FindUsagesProvider {
+class TickScriptFindUsagesProvider : FindUsagesProvider {
   override fun getHelpId(psiElement: PsiElement): String? = null
 
   override fun getWordsScanner(): WordsScanner? {
-    return KapacitorWordScanner(KapacitorLexer())
+    return TickScriptWordScanner(TickScriptLexer())
   }
 
   override fun canFindUsagesFor(psiElement: PsiElement): Boolean {
-    if (psiElement !is PsiNamedElement || psiElement !is KapacitorExpression) {
+    if (psiElement !is PsiNamedElement || psiElement !is TickScriptExpression) {
       return false
     }
-    if (psiElement is KapacitorIdentifier) {
-      if (KapacitorPsiUtil.isVariableDeclaration(psiElement)) return true
+    if (psiElement is TickScriptIdentifier) {
+      if (TickScriptPsiUtil.isVariableDeclaration(psiElement)) return true
       val parent = (psiElement as PsiElement).parent
       return when (parent) {
-        is KapacitorDeclaration -> true
-        is KapacitorParameterList -> true
-        is KapacitorBinaryExpression -> true
-        is KapacitorChainExpression -> parent.lOperand === psiElement
+        is TickScriptDeclaration -> true
+        is TickScriptParameterList -> true
+        is TickScriptBinaryExpression -> true
+        is TickScriptChainExpression -> parent.lOperand === psiElement
         else -> false
       }
     }
@@ -48,16 +48,16 @@ class KapacitorFindUsagesProvider : FindUsagesProvider {
   }
 
   override fun getType(element: PsiElement): String {
-    if (element is KapacitorIdentifier) {
-      if (KapacitorPsiUtil.isVariableDeclaration(element)) {
+    if (element is TickScriptIdentifier) {
+      if (TickScriptPsiUtil.isVariableDeclaration(element)) {
         return "Variable"
       }
       val parent = (element as PsiElement).parent
       when (parent) {
-        is KapacitorDeclaration -> return "Variable value"
-        is KapacitorParameterList -> return "Parameter"
-        is KapacitorBinaryExpression -> return "Operand"
-        is KapacitorChainExpression -> if (parent.lOperand === element) return "Chain Source"
+        is TickScriptDeclaration -> return "Variable value"
+        is TickScriptParameterList -> return "Parameter"
+        is TickScriptBinaryExpression -> return "Operand"
+        is TickScriptChainExpression -> if (parent.lOperand === element) return "Chain Source"
       }
     }
     if (element is PsiNamedElement) {

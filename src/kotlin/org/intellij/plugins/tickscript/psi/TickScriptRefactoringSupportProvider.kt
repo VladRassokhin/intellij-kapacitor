@@ -15,16 +15,20 @@
  */
 package org.intellij.plugins.tickscript.psi
 
+import com.intellij.lang.refactoring.RefactoringSupportProvider
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiNamedElement
 
-object KapacitorPsiUtil {
-  fun isVariableDeclaration(element: PsiElement): Boolean {
-    if (element !is KapacitorIdentifier) return false
-    val parent = element.parent
-    if (parent is KapacitorDeclaration && parent.variable === element) return true
-    if (parent is KapacitorTypeDeclaration && parent.variable === element) return true
-    return false
+class TickScriptRefactoringSupportProvider : RefactoringSupportProvider() {
+  override fun isAvailable(context: PsiElement): Boolean {
+    return context is TickScriptExpression && context is PsiNamedElement
   }
 
+  override fun isInplaceRenameAvailable(element: PsiElement, context: PsiElement?): Boolean {
+    return context is TickScriptExpression && context is PsiNamedElement
+  }
 
+  override fun isMemberInplaceRenameAvailable(element: PsiElement, context: PsiElement?): Boolean {
+    return context is TickScriptExpression && context is PsiNamedElement
+  }
 }

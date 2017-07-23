@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.intellij.plugins.tickscript.psi
+package org.intellij.plugins.tickscript.findUsages
 
-import com.intellij.openapi.util.TextRange
-import com.intellij.psi.AbstractElementManipulator
+import com.intellij.lang.cacheBuilder.DefaultWordsScanner
+import com.intellij.psi.tree.TokenSet
+import org.intellij.plugins.tickscript.TickScriptElementTypes
+import org.intellij.plugins.tickscript.TickScriptLexer
+import org.intellij.plugins.tickscript.TickScriptParserDefinition
 
-class KapacitorIdentifierManipulator : AbstractElementManipulator<KapacitorIdentifier>() {
-  override fun handleContentChange(element: KapacitorIdentifier, range: TextRange, newContent: String): KapacitorIdentifier {
-    val replacement = range.replace(element.text, newContent)
-    element.setName(replacement)
-    return element
+class TickScriptWordScanner(lexer: TickScriptLexer) : DefaultWordsScanner(lexer, TokenSet.create(TickScriptElementTypes.IDENTIFIER), TickScriptParserDefinition.COMMENTARIES, TickScriptParserDefinition.STRING_LITERALS) {
+  init {
+    setMayHaveFileRefsInLiterals(true)
   }
 }

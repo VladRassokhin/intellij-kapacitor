@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2000-2017 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +15,15 @@
  */
 package org.intellij.plugins.tickscript.psi.impl
 
+import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
-import org.intellij.plugins.tickscript.psi.TickScriptBinaryExpression
+import com.intellij.openapi.util.text.StringUtil
+import org.intellij.plugins.tickscript.psi.TickScriptElement
 
-abstract class BinaryExpressionMixin(node: ASTNode) : TickScriptExpressionImpl(node), TickScriptBinaryExpression {
+open class TickScriptElementImpl(node: ASTNode) : ASTWrapperPsiElement(node), TickScriptElement {
+
+  override fun toString(): String {
+    val className = javaClass.simpleName
+    return StringUtil.trimEnd(className, "Impl")
+  }
 }

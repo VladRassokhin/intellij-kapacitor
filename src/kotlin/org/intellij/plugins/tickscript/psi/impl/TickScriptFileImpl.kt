@@ -19,14 +19,14 @@ import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.lang.Language
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.psi.FileViewProvider
-import org.intellij.plugins.tickscript.psi.KapacitorFile
+import org.intellij.plugins.tickscript.psi.TickScriptFile
 
-class KapacitorFileImpl(fileViewProvider: FileViewProvider, language: Language) : PsiFileBase(fileViewProvider, language), KapacitorFile {
+class TickScriptFileImpl(fileViewProvider: FileViewProvider, language: Language) : PsiFileBase(fileViewProvider, language), TickScriptFile {
   override fun getFileType(): FileType {
     return viewProvider.virtualFile.fileType
   }
 
   override fun toString(): String {
-    return "KapacitorFile: " + (virtualFile?.name ?: "<unknown>")
+    return "TickScriptFile: " + (virtualFile?.name ?: "<unknown>")
   }
 }

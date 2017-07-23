@@ -17,7 +17,7 @@ package org.intellij.plugins.tickscript.editor
 
 import com.intellij.lang.Commenter
 
-class KapacitorCommenter : Commenter {
+class TickScriptCommenter : Commenter {
   override fun getCommentedBlockCommentPrefix(): String? = null
 
   override fun getCommentedBlockCommentSuffix(): String? = null

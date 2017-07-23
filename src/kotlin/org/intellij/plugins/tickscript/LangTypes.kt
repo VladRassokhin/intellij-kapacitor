@@ -17,12 +17,12 @@ package org.intellij.plugins.tickscript
 
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.TokenSet
-import org.intellij.plugins.tickscript.KapacitorElementTypes.*
+import org.intellij.plugins.tickscript.TickScriptElementTypes.*
 
-open class KapacitorElementType(debugName: String) : IElementType(debugName, KapacitorLanguage)
-open class KapacitorTokenType(debugName: String) : IElementType(debugName, KapacitorLanguage)
+open class TickScriptElementType(debugName: String) : IElementType(debugName, TickScriptLanguage)
+open class TickScriptTokenType(debugName: String) : IElementType(debugName, TickScriptLanguage)
 
-object KapacitorTokenTypes {
+object TickScriptTokenTypes {
   val BINARY_OPERATORS: TokenSet = TokenSet.create(
       OP_PLUS, OP_MINUS, OP_MULT, OP_DIV, OP_MOD,
       OP_EQUAL, OP_NOTEQUAL,
@@ -35,5 +35,5 @@ object KapacitorTokenTypes {
       /*OP_PLUS, */OP_MINUS, OP_NOT
   )
 
-  val ALL_OPERATORS = TokenSet.orSet(UNARY_OPERATORS, BINARY_OPERATORS, TokenSet.create(KapacitorElementTypes.ASGN))
+  val ALL_OPERATORS = TokenSet.orSet(UNARY_OPERATORS, BINARY_OPERATORS, TokenSet.create(TickScriptElementTypes.ASGN))
 }

@@ -26,37 +26,37 @@ import com.intellij.psi.codeStyle.DisplayPriority
 import com.intellij.psi.codeStyle.DisplayPrioritySortable
 import javax.swing.Icon
 
-class KapacitorColorsPage : ColorSettingsPage, InspectionColorSettingsPage, DisplayPrioritySortable {
+class TickScriptColorsPage : ColorSettingsPage, InspectionColorSettingsPage, DisplayPrioritySortable {
 
   companion object {
     private val descriptors: Array<out AttributesDescriptor> = arrayOf(
-        AttributesDescriptor("Braces and Operators//Brackets", KapacitorSyntaxHighlighterFactory.Kapacitor_BRACKETS),
-        AttributesDescriptor("Braces and Operators//Braces", KapacitorSyntaxHighlighterFactory.Kapacitor_PARENTHESES),
-        AttributesDescriptor("Braces and Operators//Comma", KapacitorSyntaxHighlighterFactory.Kapacitor_COMMA),
-        AttributesDescriptor("Braces and Operators//Chains", KapacitorSyntaxHighlighterFactory.Kapacitor_CHAINS),
-        AttributesDescriptor("Braces and Operators//Operation sign", KapacitorSyntaxHighlighterFactory.Kapacitor_OPERATION_SIGN),
+        AttributesDescriptor("Braces and Operators//Brackets", TickScriptSyntaxHighlighterFactory.TickScript_BRACKETS),
+        AttributesDescriptor("Braces and Operators//Braces", TickScriptSyntaxHighlighterFactory.TickScript_PARENTHESES),
+        AttributesDescriptor("Braces and Operators//Comma", TickScriptSyntaxHighlighterFactory.TickScript_COMMA),
+        AttributesDescriptor("Braces and Operators//Chains", TickScriptSyntaxHighlighterFactory.TickScript_CHAINS),
+        AttributesDescriptor("Braces and Operators//Operation sign", TickScriptSyntaxHighlighterFactory.TickScript_OPERATION_SIGN),
 
-        AttributesDescriptor("Number", KapacitorSyntaxHighlighterFactory.Kapacitor_NUMBER),
-        AttributesDescriptor("Keyword", KapacitorSyntaxHighlighterFactory.Kapacitor_KEYWORD),
-        AttributesDescriptor("Identifier", KapacitorSyntaxHighlighterFactory.Kapacitor_IDENTIFIER),
+        AttributesDescriptor("Number", TickScriptSyntaxHighlighterFactory.TickScript_NUMBER),
+        AttributesDescriptor("Keyword", TickScriptSyntaxHighlighterFactory.TickScript_KEYWORD),
+        AttributesDescriptor("Identifier", TickScriptSyntaxHighlighterFactory.TickScript_IDENTIFIER),
 
-        AttributesDescriptor("Comments", KapacitorSyntaxHighlighterFactory.Kapacitor_LINE_COMMENT),
+        AttributesDescriptor("Comments", TickScriptSyntaxHighlighterFactory.TickScript_LINE_COMMENT),
 
-        AttributesDescriptor("String//References", KapacitorSyntaxHighlighterFactory.Kapacitor_REFERENCE),
-        AttributesDescriptor("String//String text", KapacitorSyntaxHighlighterFactory.Kapacitor_STRING),
-        AttributesDescriptor("String//Valid escape sequence", KapacitorSyntaxHighlighterFactory.Kapacitor_VALID_ESCAPE),
-        AttributesDescriptor("String//Invalid escape sequence", KapacitorSyntaxHighlighterFactory.Kapacitor_INVALID_ESCAPE)
+        AttributesDescriptor("String//References", TickScriptSyntaxHighlighterFactory.TickScript_REFERENCE),
+        AttributesDescriptor("String//String text", TickScriptSyntaxHighlighterFactory.TickScript_STRING),
+        AttributesDescriptor("String//Valid escape sequence", TickScriptSyntaxHighlighterFactory.TickScript_VALID_ESCAPE),
+        AttributesDescriptor("String//Invalid escape sequence", TickScriptSyntaxHighlighterFactory.TickScript_INVALID_ESCAPE)
     )
     private val additional: Map<String, TextAttributesKey> = mapOf(
     )
   }
 
   override fun getIcon(): Icon? {
-    return Icons.FileTypes.Kapacitor
+    return Icons.FileTypes.TickScript
   }
 
   override fun getHighlighter(): SyntaxHighlighter {
-    return SyntaxHighlighterFactory.getSyntaxHighlighter(KapacitorLanguage, null, null)
+    return SyntaxHighlighterFactory.getSyntaxHighlighter(TickScriptLanguage, null, null)
   }
 
   override fun getDemoText(): String {
@@ -109,7 +109,7 @@ alert
   }
 
   override fun getDisplayName(): String {
-    return KapacitorLanguage.displayName
+    return TickScriptLanguage.displayName
   }
 
   override fun getPriority(): DisplayPriority? {

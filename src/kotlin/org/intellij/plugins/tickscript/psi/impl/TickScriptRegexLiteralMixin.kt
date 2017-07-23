@@ -20,9 +20,9 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.LiteralTextEscaper
 import com.intellij.psi.PsiLanguageInjectionHost
 import com.intellij.psi.impl.source.tree.LeafElement
-import org.intellij.plugins.tickscript.psi.KapacitorRegexLiteral
+import org.intellij.plugins.tickscript.psi.TickScriptRegexLiteral
 
-abstract class KapacitorRegexLiteralMixin(node: ASTNode) : KapacitorLiteralImpl(node), KapacitorRegexLiteral, PsiLanguageInjectionHost {
+abstract class TickScriptRegexLiteralMixin(node: ASTNode) : TickScriptLiteralImpl(node), TickScriptRegexLiteral, PsiLanguageInjectionHost {
   override fun isValidHost() = true
 
   override fun updateText(text: String): PsiLanguageInjectionHost {
@@ -33,7 +33,7 @@ abstract class KapacitorRegexLiteralMixin(node: ASTNode) : KapacitorLiteralImpl(
   }
 
   override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
-    return object : LiteralTextEscaper<KapacitorRegexLiteralMixin>(this) {
+    return object : LiteralTextEscaper<TickScriptRegexLiteralMixin>(this) {
       override fun isOneLine(): Boolean {
         return true
       }

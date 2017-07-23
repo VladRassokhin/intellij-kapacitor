@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright 2000-2017 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.intellij.plugins.tickscript.psi.impl
+package org.intellij.plugins.tickscript.psi
 
-import com.intellij.extapi.psi.ASTWrapperPsiElement
-import com.intellij.lang.ASTNode
-import com.intellij.openapi.util.text.StringUtil
-import org.intellij.plugins.tickscript.psi.KapacitorElement
+import com.intellij.openapi.util.TextRange
+import com.intellij.psi.AbstractElementManipulator
 
-open class KapacitorElementImpl(node: ASTNode) : ASTWrapperPsiElement(node), KapacitorElement {
-
-  override fun toString(): String {
-    val className = javaClass.simpleName
-    return StringUtil.trimEnd(className, "Impl")
+class TickScriptIdentifierManipulator : AbstractElementManipulator<TickScriptIdentifier>() {
+  override fun handleContentChange(element: TickScriptIdentifier, range: TextRange, newContent: String): TickScriptIdentifier {
+    val replacement = range.replace(element.text, newContent)
+    element.setName(replacement)
+    return element
   }
 }

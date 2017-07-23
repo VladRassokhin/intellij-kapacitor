@@ -20,7 +20,7 @@ import com.intellij.psi.InjectedLanguagePlaces
 import com.intellij.psi.LanguageInjector
 import com.intellij.psi.PsiLanguageInjectionHost
 import org.intellij.lang.regexp.RegExpLanguage
-import org.intellij.plugins.tickscript.psi.impl.KapacitorRegexLiteralMixin
+import org.intellij.plugins.tickscript.psi.impl.TickScriptRegexLiteralMixin
 
 class RegexInjector : LanguageInjector {
   override fun getLanguagesToInject(host: PsiLanguageInjectionHost, places: InjectedLanguagePlaces) {
@@ -29,11 +29,11 @@ class RegexInjector : LanguageInjector {
 
   companion object {
     fun getLanguagesToInject(host: PsiLanguageInjectionHost, places: InjectedLanguagePlaces) {
-      if (host is KapacitorRegexLiteralMixin) return getStringLiteralInjections(host, places)
+      if (host is TickScriptRegexLiteralMixin) return getStringLiteralInjections(host, places)
       return
     }
 
-    fun getStringLiteralInjections(host: KapacitorRegexLiteralMixin, places: InjectedLanguagePlaces) {
+    fun getStringLiteralInjections(host: TickScriptRegexLiteralMixin, places: InjectedLanguagePlaces) {
       places.addPlace(RegExpLanguage.INSTANCE, TextRange.from(1, host.textLength - 2), null, null)
     }
   }

@@ -23,6 +23,6 @@ import javax.swing.Icon
 object Icons {
   object FileTypes {
     // TODO: Create icons
-    val Kapacitor: Icon by lazy { AllIcons.FileTypes.Text }
+    val TickScript: Icon by lazy { AllIcons.FileTypes.Text }
   }
 }

@@ -24,7 +24,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.SearchScope
 import com.intellij.util.IncorrectOperationException
 
-open class KapacitorIdentifierMixin(node: ASTNode) : KapacitorExpressionImpl(node), PsiNamedElement {
+open class TickScriptIdentifierMixin(node: ASTNode) : TickScriptExpressionImpl(node), PsiNamedElement {
   override fun getName(): String? {
     return text
   }

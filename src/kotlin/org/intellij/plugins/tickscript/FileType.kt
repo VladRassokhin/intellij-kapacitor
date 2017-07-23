@@ -19,21 +19,21 @@ import com.intellij.openapi.fileTypes.FileTypeConsumer
 import com.intellij.openapi.fileTypes.FileTypeFactory
 import com.intellij.openapi.fileTypes.LanguageFileType
 
-object KapacitorFileType : LanguageFileType(KapacitorLanguage) {
+object TickScriptFileType : LanguageFileType(TickScriptLanguage) {
   val DEFAULT_EXTENSION: String = "tick"
 
-  override fun getIcon() = Icons.FileTypes.Kapacitor
+  override fun getIcon() = Icons.FileTypes.TickScript
 
   override fun getDefaultExtension() = DEFAULT_EXTENSION
 
-  override fun getDescription() = "Kapacitor TICKscript" // TODO: Better one
+  override fun getDescription() = "TickScript TICKscript" // TODO: Better one
 
-  override fun getName() = "Kapacitor"
+  override fun getName() = "TickScript"
 
 }
 
-class KapacitorFileTypeFactory : FileTypeFactory() {
+class TickScriptFileTypeFactory : FileTypeFactory() {
   override fun createFileTypes(consumer: FileTypeConsumer) {
-    consumer.consume(KapacitorFileType, KapacitorFileType.DEFAULT_EXTENSION)
+    consumer.consume(TickScriptFileType, TickScriptFileType.DEFAULT_EXTENSION)
   }
 }

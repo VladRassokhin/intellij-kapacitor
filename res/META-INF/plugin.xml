@@ -1,6 +1,6 @@
 <idea-plugin version="2">
   <id>org.intellij.plugins.tickscript</id>
-  <name>Kapacitor language support</name>
+  <name>TickScript language support</name>
   <version>0.1.0.dev</version>
   <vendor email="vlad.rassokhin+intellij+hcl@gmail.com" url="https://github.com/VladRassokhin">Vladislav Rassokhin</vendor>
 
@@ -26,24 +26,24 @@
   <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <fileTypeFactory implementation="org.intellij.plugins.tickscript.KapacitorFileTypeFactory"/>
-    <lang.parserDefinition language="Kapacitor" implementationClass="org.intellij.plugins.tickscript.KapacitorParserDefinition"/>
+    <fileTypeFactory implementation="org.intellij.plugins.tickscript.TickScriptFileTypeFactory"/>
+    <lang.parserDefinition language="TickScript" implementationClass="org.intellij.plugins.tickscript.TickScriptParserDefinition"/>
 
-    <lang.syntaxHighlighterFactory key="Kapacitor" implementationClass="org.intellij.plugins.tickscript.KapacitorSyntaxHighlighterFactory"/>
-    <colorSettingsPage implementation="org.intellij.plugins.tickscript.KapacitorColorsPage"/>
+    <lang.syntaxHighlighterFactory key="TickScript" implementationClass="org.intellij.plugins.tickscript.TickScriptSyntaxHighlighterFactory"/>
+    <colorSettingsPage implementation="org.intellij.plugins.tickscript.TickScriptColorsPage"/>
 
     <!-- CodeInsight -->
-    <lang.commenter language="Kapacitor" implementationClass="org.intellij.plugins.tickscript.editor.KapacitorCommenter"/>
-    <lang.braceMatcher language="Kapacitor" implementationClass="org.intellij.plugins.tickscript.codeinsight.KapacitorBraceMatcher"/>
+    <lang.commenter language="TickScript" implementationClass="org.intellij.plugins.tickscript.editor.TickScriptCommenter"/>
+    <lang.braceMatcher language="TickScript" implementationClass="org.intellij.plugins.tickscript.codeinsight.TickScriptBraceMatcher"/>
 
-    <lang.findUsagesProvider language="Kapacitor" implementationClass="org.intellij.plugins.tickscript.findUsages.KapacitorFindUsagesProvider"/>
-    <usageTypeProvider implementation="org.intellij.plugins.tickscript.findUsages.KapacitorUsageTypeProvider"/>
-    <psi.referenceContributor language="Kapacitor" implementation="org.intellij.plugins.tickscript.psi.KapacitorReferenceContributor"/>
+    <lang.findUsagesProvider language="TickScript" implementationClass="org.intellij.plugins.tickscript.findUsages.TickScriptFindUsagesProvider"/>
+    <usageTypeProvider implementation="org.intellij.plugins.tickscript.findUsages.TickScriptUsageTypeProvider"/>
+    <psi.referenceContributor language="TickScript" implementation="org.intellij.plugins.tickscript.psi.TickScriptReferenceContributor"/>
 
-    <lang.elementManipulator forClass="org.intellij.plugins.tickscript.psi.KapacitorIdentifier"
-                             implementationClass="org.intellij.plugins.tickscript.psi.KapacitorIdentifierManipulator"/>
+    <lang.elementManipulator forClass="org.intellij.plugins.tickscript.psi.TickScriptIdentifier"
+                             implementationClass="org.intellij.plugins.tickscript.psi.TickScriptIdentifierManipulator"/>
 
-    <lang.refactoringSupport language="Kapacitor" implementationClass="org.intellij.plugins.tickscript.psi.KapacitorRefactoringSupportProvider"/>
+    <lang.refactoringSupport language="TickScript" implementationClass="org.intellij.plugins.tickscript.psi.TickScriptRefactoringSupportProvider"/>
 
     <!-- Inject Regexps -->
     <languageInjector implementation="org.intellij.plugins.tickscript.RegexInjector"/>

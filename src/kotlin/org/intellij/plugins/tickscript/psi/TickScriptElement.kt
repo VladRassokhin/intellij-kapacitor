@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.intellij.plugins.tickscript
+package org.intellij.plugins.tickscript.psi
 
-import com.intellij.lexer.FlexAdapter
+import com.intellij.psi.NavigatablePsiElement
+import com.intellij.psi.PsiElement
 
-class KapacitorLexer : FlexAdapter(_KapacitorLexer())
+interface TickScriptElement : PsiElement, NavigatablePsiElement

@@ -15,7 +15,16 @@
  */
 package org.intellij.plugins.tickscript.psi
 
-import com.intellij.psi.NavigatablePsiElement
 import com.intellij.psi.PsiElement
 
-interface KapacitorElement : PsiElement, NavigatablePsiElement
+object TickScriptPsiUtil {
+  fun isVariableDeclaration(element: PsiElement): Boolean {
+    if (element !is TickScriptIdentifier) return false
+    val parent = element.parent
+    if (parent is TickScriptDeclaration && parent.variable === element) return true
+    if (parent is TickScriptTypeDeclaration && parent.variable === element) return true
+    return false
+  }
+
+
+}
