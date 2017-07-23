@@ -5,18 +5,18 @@ import com.intellij.psi.tree.IElementType;
 
 import static com.intellij.psi.TokenType.BAD_CHARACTER;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
-import static org.intellij.plugins.tickscript.KapacitorElementTypes.*;
+import static org.intellij.plugins.tickscript.TickScriptElementTypes.*;
 
 %%
 
 %{
-  public _KapacitorLexer() {
+  public _TickScriptLexer() {
     this((java.io.Reader)null);
   }
 %}
 
 %public
-%class _KapacitorLexer
+%class _TickScriptLexer
 %implements FlexLexer
 %function advance
 %type IElementType
