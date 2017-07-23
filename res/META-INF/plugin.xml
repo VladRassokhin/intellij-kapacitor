@@ -19,7 +19,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-    <h4>0.1.0 (UNRELEASED)</h4>
+    <h4>0.1.0</h4>
     <p>Basic language support with syntax highlighting</p>
     <p>Simple Find Usages support for variables</p>
     <p>Commenter (Cmd/Ctrl + /)</p>
