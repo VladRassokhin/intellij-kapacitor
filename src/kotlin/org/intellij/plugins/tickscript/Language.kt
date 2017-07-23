@@ -13,5 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-rootProject.name = 'intellij-tickscript'
+package org.intellij.plugins.tickscript
+
+import com.intellij.lang.Language
+
+object KapacitorLanguage : Language("Kapacitor") {
+  override fun isCaseSensitive() = true
+  override fun getDisplayName(): String {
+    return "Kapacitor Language" // TODO: Better name
+  }
+}
 

@@ -46,7 +46,7 @@ apply plugin: 'idea'
 
 intellij {
     version '14.1.7'
-    pluginName 'intellij-kapacitor'
+    pluginName 'intellij-tickscript'
     sandboxDirectory="${project.projectDir}/idea-sandbox"
     updateSinceUntilBuild = false
 }

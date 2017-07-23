@@ -13,5 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-rootProject.name = 'intellij-tickscript'
+package org.intellij.plugins.tickscript;
 
+import com.intellij.testFramework.LexerTestCase;
+import org.jetbrains.annotations.Nullable;
+
+public abstract class BaseLexerTestCase extends LexerTestCase {
+  @Override
+  protected void doTest(String text, @Nullable String expected) {
+    super.doTest(text, expected);
+    checkCorrectRestart(text);
+  }
+
+}

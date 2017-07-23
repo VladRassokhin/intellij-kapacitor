@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2000-2017 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,5 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-rootProject.name = 'intellij-tickscript'
+package org.intellij.plugins.tickscript.psi.impl
 
+import com.intellij.extapi.psi.ASTWrapperPsiElement
+import com.intellij.lang.ASTNode
+import com.intellij.openapi.util.text.StringUtil
+import org.intellij.plugins.tickscript.psi.KapacitorElement
+
+open class KapacitorElementImpl(node: ASTNode) : ASTWrapperPsiElement(node), KapacitorElement {
+
+  override fun toString(): String {
+    val className = javaClass.simpleName
+    return StringUtil.trimEnd(className, "Impl")
+  }
+}

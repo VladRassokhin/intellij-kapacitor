@@ -13,5 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-rootProject.name = 'intellij-tickscript'
+package org.intellij.plugins.tickscript.psi
 
+import com.intellij.psi.PsiElement
+
+object KapacitorPsiUtil {
+  fun isVariableDeclaration(element: PsiElement): Boolean {
+    if (element !is KapacitorIdentifier) return false
+    val parent = element.parent
+    if (parent is KapacitorDeclaration && parent.variable === element) return true
+    if (parent is KapacitorTypeDeclaration && parent.variable === element) return true
+    return false
+  }
+
+
+}

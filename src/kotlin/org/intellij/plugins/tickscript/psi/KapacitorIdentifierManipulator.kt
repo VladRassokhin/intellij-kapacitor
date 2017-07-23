@@ -13,5 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-rootProject.name = 'intellij-tickscript'
+package org.intellij.plugins.tickscript.psi
 
+import com.intellij.openapi.util.TextRange
+import com.intellij.psi.AbstractElementManipulator
+
+class KapacitorIdentifierManipulator : AbstractElementManipulator<KapacitorIdentifier>() {
+  override fun handleContentChange(element: KapacitorIdentifier, range: TextRange, newContent: String): KapacitorIdentifier {
+    val replacement = range.replace(element.text, newContent)
+    element.setName(replacement)
+    return element
+  }
+}

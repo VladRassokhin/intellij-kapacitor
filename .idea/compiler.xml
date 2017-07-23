@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="intellij-kapacitor_main" target="1.6" />
-      <module name="intellij-kapacitor_test" target="1.6" />
+      <module name="intellij-tickscript_main" target="1.6" />
+      <module name="intellij-tickscript_test" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>

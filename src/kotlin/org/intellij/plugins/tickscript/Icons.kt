@@ -13,5 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-rootProject.name = 'intellij-tickscript'
+package org.intellij.plugins.tickscript
 
+import com.intellij.icons.AllIcons
+import com.intellij.openapi.util.IconLoader
+import com.intellij.util.PlatformIcons
+import javax.swing.Icon
+
+object Icons {
+  object FileTypes {
+    // TODO: Create icons
+    val Kapacitor: Icon by lazy { AllIcons.FileTypes.Text }
+  }
+}

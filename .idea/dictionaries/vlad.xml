@@ -15,6 +15,7 @@
       <w>provisioner</w>
       <w>provisioners</w>
       <w>tfvars</w>
+      <w>tickscript</w>
       <w>winrm</w>
     </words>
   </dictionary>

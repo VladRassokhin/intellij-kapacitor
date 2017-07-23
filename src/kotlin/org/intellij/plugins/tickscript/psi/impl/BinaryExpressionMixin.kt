@@ -13,5 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-rootProject.name = 'intellij-tickscript'
+package org.intellij.plugins.tickscript.psi.impl
 
+import com.intellij.lang.ASTNode
+import org.intellij.plugins.tickscript.psi.KapacitorBinaryExpression
+
+abstract class BinaryExpressionMixin(node: ASTNode) : KapacitorExpressionImpl(node), KapacitorBinaryExpression {
+}

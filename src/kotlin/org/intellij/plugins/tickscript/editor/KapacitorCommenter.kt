@@ -13,5 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-rootProject.name = 'intellij-tickscript'
+package org.intellij.plugins.tickscript.editor
 
+import com.intellij.lang.Commenter
+
+class KapacitorCommenter : Commenter {
+  override fun getCommentedBlockCommentPrefix(): String? = null
+
+  override fun getCommentedBlockCommentSuffix(): String? = null
+
+  override fun getBlockCommentPrefix(): String? = null
+
+  override fun getBlockCommentSuffix(): String? = null
+
+  override fun getLineCommentPrefix(): String? = "//"
+}
