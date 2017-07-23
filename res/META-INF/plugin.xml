@@ -2,7 +2,7 @@
   <id>org.intellij.plugins.tickscript</id>
   <name>TickScript language support</name>
   <version>0.1.0.dev</version>
-  <vendor email="vlad.rassokhin+intellij+hcl@gmail.com" url="https://github.com/VladRassokhin">Vladislav Rassokhin</vendor>
+  <vendor email="vlad.rassokhin+intellij+tickscript@gmail.com" url="https://github.com/VladRassokhin">Vladislav Rassokhin</vendor>
 
   <description><![CDATA[
     <!-- TODO!!! -->

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 {
-//  org.intellij.plugins.hcl
   parserClass = 'org.intellij.plugins.tickscript.TickScriptParser'
   parserUtilClass = "org.intellij.plugins.tickscript.psi.TickScriptParserUtil"
   psiPackage = 'org.intellij.plugins.tickscript.psi'
