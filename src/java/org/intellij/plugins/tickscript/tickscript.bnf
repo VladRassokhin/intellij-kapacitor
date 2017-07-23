@@ -1,0 +1,234 @@
+/*
+ * Copyright 2000-2017 JetBrains s.r.o.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+{
+//  org.intellij.plugins.hcl
+  parserClass = 'org.intellij.plugins.tickscript.TickScriptParser'
+  parserUtilClass = "org.intellij.plugins.tickscript.psi.TickScriptParserUtil"
+  psiPackage = 'org.intellij.plugins.tickscript.psi'
+  psiImplPackage = 'org.intellij.plugins.tickscript.psi.impl'
+
+  elementTypeHolderClass = 'org.intellij.plugins.tickscript.TickScriptElementTypes'
+  elementTypeClass = 'org.intellij.plugins.tickscript.TickScriptElementType'
+  psiClassPrefix = 'TickScript'
+  psiVisitorName = 'TickScriptElementVisitor'
+
+  psiImplUtilClass = 'org.intellij.plugins.tickscript.psi.impl.TickScriptPsiImplUtilJ'
+  tokenTypeClass = 'org.intellij.plugins.tickscript.TickScriptTokenType'
+
+  tokens = [
+//    space = "regexp:\s+"
+    line_comment = "regexp:(//.*)|(#.*)"
+
+    L_PAREN='('
+    R_PAREN=')'
+    L_BRACKET='['
+    R_BRACKET=']'
+
+    ASGN='='
+
+    PIPE='|'
+    AT="@"
+    COMMA=','
+//    STAR='*'
+
+    DOT='.'
+
+    // from operatorStr
+    OP_Not =           "!"
+    OP_Plus =          "+"
+    OP_Minus =         "-"
+    OP_Mult =          "*"
+    OP_Div =           "/"
+    OP_Mod =           "%"
+    OP_Equal =         "=="
+    OP_NotEqual =      "!="
+    OP_Less =          "<"
+    OP_Greater =       ">"
+    OP_LessEqual =     "<="
+    OP_GreaterEqual =  ">="
+    OP_RegexEqual =    "=~"
+    OP_RegexNotEqual = "!~"
+    OP_And =           "AND"
+    OP_Or =            "OR"
+
+    // from keywords
+//    KW_And    = "AND"
+//    KW_Or     = "OR"
+//    KW_True   = "TRUE"
+//    KW_False  = "FALSE"
+    KW_Var    = "var"
+    KW_Lambda = "lambda:"
+
+    TRUE='TRUE'
+    FALSE='FALSE'
+
+    ID="regexp:[a-zA-Z_][0-9a-zA-Z_]*"
+    NUMBER='regexp:-?(\d+(\.\d+)?)|(\.\d+)'
+    DURATION='regexp:[1-9]\d*([uµsmhdw]|ms)'
+
+// TODO:Add tailing '?' to strings
+    SINGLE_QUOTED_STRING="regexp:'([^\\\']|\\.)*'"
+    TRIPLE_QUOTED_STRING="regexp:'''([^']+'{0,2})*'''"
+
+    REGEX_STRING="regexp:/([^\\\r\n]|\\[^\r\n])*/"
+    REFERENCE_STRING="regexp:\"([^\\\"\r\n]|\\[^\r\n])*\""
+  ]
+
+  extends(".*_literal")=literal
+  extends("Chain.+Expression")=ChainExpression
+  extends("Binary.+Expression")=BinaryExpression
+  extends(".*Expression|identifier|literal")=expression
+}
+
+program ::= statement*
+
+private statement ::= type_declaration | declaration | expression
+type_declaration ::= "var" identifier identifier {
+  methods=[
+    identifier=""
+    variable="identifier[0]"
+    type="identifier[1]"
+  ]
+}
+declaration ::= "var" identifier "=" expression {
+  methods=[
+    expression=""
+    value="expression[1]"
+    getVariable
+  ]
+}
+
+expression ::=
+    ParenthesizedExpression
+  | LambdaExpression
+  | BinaryOrExpression
+  | BinaryAndExpression
+
+  | BinaryEqualityExpression
+  | BinaryRelationalExpression
+
+  | BinaryAdditionExpression
+  | BinaryMultiplyExpression
+
+  | ChainPipeExpression
+  | ChainDotExpression
+  | ChainAtExpression
+  | MethodCallExpression
+
+  | identifier
+  | UnaryExpression
+  | literal
+  | StringList
+
+LambdaExpression::="lambda:" expression
+
+ParenthesizedExpression::= '(' <<push 0>> expression ')' <<pop>>
+fake BinaryExpression ::= expression+ {
+  mixin="org.intellij.plugins.tickscript.psi.impl.BinaryExpressionMixin"
+  methods=[
+    expression="" // Magic hack
+    LOperand="expression[0]"
+    ROperand="expression[1]"
+    getOperationSign
+  ]
+}
+BinaryRelationalExpression::= expression relationalOp expression
+BinaryEqualityExpression::= expression equalityOp expression
+
+BinaryAndExpression::= expression andOp expression
+BinaryOrExpression::= expression orOp expression
+
+BinaryAdditionExpression::= expression addOp expression
+BinaryMultiplyExpression::= expression mulOp expression
+
+UnaryExpression::= unaryOp expression
+
+fake ChainExpression ::= expression+ {
+  extends=BinaryExpression
+}
+ChainDotExpression ::= expression DOT expression
+ChainPipeExpression ::= expression PIPE expression
+ChainAtExpression ::= expression AT expression
+
+
+MethodCallExpression ::= expression ParameterList {
+  methods=[
+    Callee="expression"
+    ParameterList="PrimaryFuncParameterList"
+  ]
+}
+ParameterList ::='(' (expression? (',' expression )* )?')' {
+  pin(".*")=1
+  methods=[
+    expression=""
+    Parameters="expression"
+  ]
+}
+StringList ::= '[' StringListItem* ']'  {
+  pin=1
+  extends=expression
+}
+// string_list_items inlined
+private StringListItem ::= (string_literal | identifier | star_literal) (','|&']') {
+  pin=1
+  recoverWhile = not_bracket_or_next_value
+}
+
+literal ::= number_literal | string_literal | boolean_literal | duration_literal | regex_literal | star_literal | reference_literal
+
+
+
+// Primitives:
+//private
+//unicode_char      ::= CHAR // 'regexp:[^\n\r]' // an arbitrary Unicode code point except newline
+//digit             ::= 'regexp:[0-9]'
+//ascii_letter      ::= 'regexp:[a-zA-Z]'
+//letter            ::= ascii_letter | "_"
+identifier        ::= ID //letter (letter | digit)*
+{
+  name="Identifier"
+  implements="com.intellij.psi.PsiNamedElement"
+  mixin="org.intellij.plugins.tickscript.psi.impl.TickScriptIdentifierMixin"
+}
+boolean_literal   ::= TRUE | FALSE // "TRUE" | "FALSE"
+//int_literal       ::= INTEGER // 'regexp:[1-9]' digit*
+number_literal    ::= NUMBER // digit+ ("." digit*)*
+duration_literal  ::= DURATION //int_literal duration_unit
+//duration_unit     ::= "u" | "µ" | "ms" | "s" | "m" | "h" | "d" | "w"
+string_literal    ::= SINGLE_QUOTED_STRING | TRIPLE_QUOTED_STRING
+star_literal      ::= "*"
+regex_literal     ::= REGEX_STRING {
+  mixin="org.intellij.plugins.tickscript.psi.impl.TickScriptRegexLiteralMixin"
+}
+reference_literal ::= REFERENCE_STRING
+
+// Operators
+private mulOp ::= OP_Mult | OP_Div | OP_Mod
+{ name="operator" }
+private addOp ::= OP_Plus | OP_Minus
+{ name="operator" }
+private unaryOp ::= addOp | OP_Not //Not sure whether unary plus should be supported
+{ name="operator" }
+private orOp ::= OP_Or
+{ name="operator" }
+private andOp ::= OP_And
+{ name="operator" }
+private equalityOp ::= OP_Equal | OP_NotEqual | OP_RegexEqual | OP_RegexNotEqual
+{ name="operator" }
+private relationalOp ::= OP_Less | OP_Greater | OP_LessEqual | OP_GreaterEqual
+{ name="operator" }
+
+private not_bracket_or_next_value ::= !(']'|(string_literal | identifier | star_literal))
