@@ -5,7 +5,17 @@
   <vendor email="vlad.rassokhin+intellij+tickscript@gmail.com" url="https://github.com/VladRassokhin">Vladislav Rassokhin</vendor>
 
   <description><![CDATA[
-    <!-- TODO!!! -->
+    This plugin adds support for <a href="https://docs.influxdata.com/kapacitor/v1.3/tick/">TICKScript Language</a>
+    which is used in <a href="https://www.influxdata.com/time-series-platform/#kapacitor">Kapacitor</a> framework for processing,
+    monitoring, and alerting on time series data.<br>
+    <h3>Features:</h3>
+    <h4>For file with TICKScript (.tick):</h4>
+    <ul>
+      <li>Syntax highlighting</li>
+      <li>Structure outline in 'Structure' tool window</li>
+      <li>Comment/Uncomment action</li>
+      <li>Find Usages / Go to definition for variables</li>
+    </ul>
     ]]></description>
 
   <change-notes><![CDATA[
