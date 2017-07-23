@@ -2,7 +2,7 @@
 
 Provides [TICKscript language](https://docs.influxdata.com/kapacitor/v1.3/tick/) files (`.tick`) support for [IntelliJ Platform](http://www.jetbrains.org/pages/viewpage.action?pageId=983889)-based IDEs
 
-[Plugin page](https://plugins.jetbrains.com/plugin/TODO) in [IntelliJ platform plugin repository](https://plugins.jetbrains.com).
+[Plugin page](https://plugins.jetbrains.com/plugin/9859) in [IntelliJ platform plugin repository](https://plugins.jetbrains.com).
 
 ### Features:
 ##### For .tick files:
