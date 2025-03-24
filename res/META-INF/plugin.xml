@@ -1,7 +1,7 @@
-<idea-plugin version="2">
+<idea-plugin>
   <id>org.intellij.plugins.tickscript</id>
-  <name>TickScript language support</name>
-  <version>0.1.0.dev</version>
+  <name>TickScript Language Support</name>
+  <version>0.1.1.dev</version>
   <vendor email="vlad.rassokhin+intellij+tickscript@gmail.com" url="https://github.com/VladRassokhin">Vladislav Rassokhin</vendor>
 
   <description><![CDATA[
@@ -36,10 +36,10 @@
   <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <fileTypeFactory implementation="org.intellij.plugins.tickscript.TickScriptFileTypeFactory"/>
+    <fileType name="TICKscript" implementationClass="org.intellij.plugins.tickscript.TickScriptFileType" fieldName="INSTANCE" language="TickScript" extensions="tick"/>
     <lang.parserDefinition language="TickScript" implementationClass="org.intellij.plugins.tickscript.TickScriptParserDefinition"/>
 
-    <lang.syntaxHighlighterFactory key="TickScript" implementationClass="org.intellij.plugins.tickscript.TickScriptSyntaxHighlighterFactory"/>
+    <lang.syntaxHighlighterFactory language="TickScript" implementationClass="org.intellij.plugins.tickscript.TickScriptSyntaxHighlighterFactory"/>
     <colorSettingsPage implementation="org.intellij.plugins.tickscript.TickScriptColorsPage"/>
 
     <!-- CodeInsight -->
@@ -59,12 +59,6 @@
     <languageInjector implementation="org.intellij.plugins.tickscript.RegexInjector"/>
 
   </extensions>
-
-  <application-components>
-  </application-components>
-
-  <project-components>
-  </project-components>
 
   <actions>
   </actions>
