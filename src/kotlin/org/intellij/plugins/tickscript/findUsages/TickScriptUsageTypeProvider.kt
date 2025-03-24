@@ -1,5 +1,5 @@
 /*
- * Copyright 2000-2017 JetBrains s.r.o.
+ * Copyright 2000-2025 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,7 @@ import com.intellij.usages.impl.rules.UsageTypeProvider
 import org.intellij.plugins.tickscript.psi.*
 
 class TickScriptUsageTypeProvider : UsageTypeProvider {
-  override fun getUsageType(element: PsiElement?): UsageType? {
-    if (element == null) return null
+  override fun getUsageType(element: PsiElement): UsageType? {
     if (element !is TickScriptExpression) return null
     if (element is TickScriptIdentifier) {
       val parent = (element as PsiElement).parent

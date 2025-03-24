@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-tickscript.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-tickscript.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-tickscript_main.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-tickscript_main.iml" group="intellij-tickscript" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-tickscript_test.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-tickscript_test.iml" group="intellij-tickscript" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-kapacitor.intellij-tickscript.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-kapacitor.intellij-tickscript.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-kapacitor.intellij-tickscript.main.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-kapacitor.intellij-tickscript.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-kapacitor.intellij-tickscript.test.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-kapacitor.intellij-tickscript.test.iml" />
     </modules>
   </component>
 </project>

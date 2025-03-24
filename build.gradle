@@ -1,5 +1,5 @@
 /*
- * Copyright 2000-2017 JetBrains s.r.o.
+ * Copyright 2000-2025 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,54 +14,65 @@
  * limitations under the License.
  */
 buildscript {
-    ext.kotlinVersion='1.1.3-2'
+    ext.kotlinVersion = '1.9.25'
     repositories {
-        mavenLocal()
         mavenCentral()
-        maven { url 'http://repository.jetbrains.com/repo/'}
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 }
 
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+
 plugins {
-    id 'org.jetbrains.intellij' version '0.2.14'
+    id 'org.jetbrains.intellij.platform' version '2.4.0'
 }
 
-version = '0.1.0'
+version = '0.1.1'
 if (System.hasProperty('build.number')) {
     version = "$version.${System.getProperty('build.number')}"
 }
 repositories {
-    mavenLocal()
     mavenCentral()
-    jcenter()
-    maven { url 'http://repository.jetbrains.com/repo/'}
+
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
-apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'org.jetbrains.intellij.platform'
 apply plugin: 'kotlin'
 apply plugin: 'idea'
 
-intellij {
-    version '14.1.7'
-    pluginName 'intellij-tickscript'
-    sandboxDirectory="${project.projectDir}/idea-sandbox"
-    updateSinceUntilBuild = false
-}
-
-// To prevent weird classpath problems in idea
-clean {
-    delete "${intellij.sandboxDirectory}/plugins/${intellij.pluginName}"
-}
-
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
+    intellijPlatform {
+        intellijIdeaCommunity '2023.3'
+
+        testFramework TestFrameworkType.Platform.INSTANCE
+    }
+
+    testImplementation 'junit:junit:4.13.2'
 }
 
-sourceCompatibility = '1.6'
-targetCompatibility = '1.6'
+intellijPlatform {
+    buildSearchableOptions = true
+    instrumentCode = true
+    projectName = 'intellij-tickscript'
+
+    pluginConfiguration {
+        ideaVersion {
+            untilBuild = provider { null }
+        }
+    }
+}
+intellijPlatformTesting {
+    runIde
+    testIde
+}
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 sourceSets {
     main {
@@ -94,12 +105,7 @@ if (System.getenv('TEAMCITY_VERSION') != null) {
 //test.testLogging.showStandardStreams = true
 }
 
-idea {
-    module {
-        excludeDirs += file(intellij.sandboxDirectory)
-    }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+wrapper {
+    gradleVersion = '8.13'
+    distributionType = Wrapper.DistributionType.BIN
 }
