@@ -1,5 +1,5 @@
 /*
- * Copyright 2000-2017 JetBrains s.r.o.
+ * Copyright 2000-2025 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,11 +30,9 @@ class TickScriptBraceMatcher : PairedBraceMatcher {
     return true
   }
 
-  companion object {
-    private val BRACE_PAIRS = arrayOf(BracePair(L_PAREN, R_PAREN, true), BracePair(L_BRACKET, R_BRACKET, true))
-  }
-
   override fun getPairs(): Array<BracePair> {
     return BRACE_PAIRS
   }
 }
+
+private val BRACE_PAIRS = arrayOf(BracePair(L_PAREN, R_PAREN, true), BracePair(L_BRACKET, R_BRACKET, true))

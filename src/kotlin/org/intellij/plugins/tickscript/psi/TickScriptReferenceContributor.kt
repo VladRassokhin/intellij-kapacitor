@@ -1,5 +1,5 @@
 /*
- * Copyright 2000-2017 JetBrains s.r.o.
+ * Copyright 2000-2025 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,6 @@ import org.intellij.plugins.tickscript.TickScriptLanguage
 import java.util.*
 
 class TickScriptReferenceContributor : PsiReferenceContributor() {
-  companion object {
-    val TickScriptConfigFile: PsiFilePattern.Capture<TickScriptFile> =
-        psiFile(TickScriptFile::class.java)
-            .withLanguage(TickScriptLanguage)
-  }
 
   override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
     registrar.registerReferenceProvider(
@@ -49,6 +44,10 @@ class TickScriptReferenceContributor : PsiReferenceContributor() {
         , ParameterReferenceProvider)
   }
 }
+
+private val TickScriptConfigFile: PsiFilePattern.Capture<TickScriptFile> =
+  psiFile(TickScriptFile::class.java)
+    .withLanguage(TickScriptLanguage)
 
 object ParameterReferenceProvider : PsiReferenceProvider() {
   override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {

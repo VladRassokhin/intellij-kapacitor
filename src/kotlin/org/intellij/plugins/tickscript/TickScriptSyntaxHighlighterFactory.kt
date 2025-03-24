@@ -27,67 +27,15 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.StringEscapesTokenTypes
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
-import java.util.*
+import com.intellij.psi.tree.TokenSet
 
 
 open class TickScriptSyntaxHighlighterFactory : SyntaxHighlighterFactory() {
 
-  companion object {
-    val TickScript_BRACKETS: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.BRACKETS", BRACKETS)
-    val TickScript_PARENTHESES: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.PARENTHESES", PARENTHESES)
-    val TickScript_COMMA: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.COMMA", COMMA)
-    val TickScript_CHAINS: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.CHAINS", DOT)
-    val TickScript_OPERATION_SIGN: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.OPERATION_SIGN", OPERATION_SIGN)
-    val TickScript_NUMBER: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.NUMBER", NUMBER)
-    val TickScript_STRING: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.STRING", STRING)
-    val TickScript_REFERENCE: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.REFERENCE", TEMPLATE_LANGUAGE_COLOR)
-    val TickScript_KEYWORD: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.KEYWORD", KEYWORD)
-    val TickScript_LINE_COMMENT: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.LINE_COMMENT", LINE_COMMENT)
-
-    // Artificial element type
-    val TickScript_IDENTIFIER: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.IDENTIFIER", IDENTIFIER)
-
-    // String escapes
-    val TickScript_VALID_ESCAPE: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.VALID_ESCAPE", VALID_STRING_ESCAPE)
-    val TickScript_INVALID_ESCAPE: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.INVALID_ESCAPE", INVALID_STRING_ESCAPE)
-  }
-
-
-  open class MySyntaxHighlighter(val lexer: TickScriptLexer) : SyntaxHighlighterBase() {
-    val ourAttributes: MutableMap<IElementType, TextAttributesKey> = HashMap()
-
-
-    init {
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScript_LINE_COMMENT, TickScriptElementTypes.LINE_COMMENT)
-
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScriptParserDefinition.PARENTHESES, TickScript_PARENTHESES)
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScriptParserDefinition.BRACKETS, TickScript_BRACKETS)
-
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScriptParserDefinition.KEYWORDS, TickScript_KEYWORD)
-
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScript_COMMA, TickScriptElementTypes.COMMA)
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScriptParserDefinition.PIPES, TickScript_CHAINS)
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScriptTokenTypes.ALL_OPERATORS, TickScript_OPERATION_SIGN)
-
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScript_NUMBER, TickScriptElementTypes.NUMBER, TickScriptElementTypes.DURATION)
-
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScript_STRING, TickScriptElementTypes.SINGLE_QUOTED_STRING)
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScript_STRING, TickScriptElementTypes.TRIPLE_QUOTED_STRING)
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScript_STRING, TickScriptElementTypes.REGEX_LITERAL)
-
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScript_REFERENCE, TickScriptElementTypes.REFERENCE_STRING)
-
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScript_IDENTIFIER, TickScriptElementTypes.ID)
-
-      SyntaxHighlighterBase.fillMap(ourAttributes, HighlighterColors.BAD_CHARACTER, TokenType.BAD_CHARACTER)
-
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScript_VALID_ESCAPE, StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN)
-      SyntaxHighlighterBase.fillMap(ourAttributes, TickScript_INVALID_ESCAPE, StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN, StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN)
-    }
-
+  open class MySyntaxHighlighter(private val lexer: TickScriptLexer) : SyntaxHighlighterBase() {
 
     override fun getTokenHighlights(tokenType: IElementType?): Array<out TextAttributesKey> {
-      return SyntaxHighlighterBase.pack(ourAttributes[tokenType])
+      return pack(ourAttributes[tokenType])
     }
 
     override fun getHighlightingLexer(): Lexer {
@@ -105,4 +53,69 @@ open class TickScriptSyntaxHighlighterFactory : SyntaxHighlighterFactory() {
   override fun getSyntaxHighlighter(project: Project?, virtualFile: VirtualFile?): SyntaxHighlighter {
     return MySyntaxHighlighter(TickScriptLexer())
   }
+}
+
+object Attributes {
+  val TickScript_BRACKETS: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.BRACKETS", BRACKETS)
+  val TickScript_PARENTHESES: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.PARENTHESES", PARENTHESES)
+  val TickScript_COMMA: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.COMMA", COMMA)
+  val TickScript_CHAINS: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.CHAINS", DOT)
+  val TickScript_OPERATION_SIGN: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.OPERATION_SIGN", OPERATION_SIGN)
+  val TickScript_NUMBER: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.NUMBER", NUMBER)
+  val TickScript_STRING: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.STRING", STRING)
+  val TickScript_REFERENCE: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.REFERENCE", TEMPLATE_LANGUAGE_COLOR)
+  val TickScript_KEYWORD: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.KEYWORD", KEYWORD)
+  val TickScript_LINE_COMMENT: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.LINE_COMMENT", LINE_COMMENT)
+
+  // Artificial element type
+  val TickScript_IDENTIFIER: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.IDENTIFIER", IDENTIFIER)
+
+  // String escapes
+  val TickScript_VALID_ESCAPE: TextAttributesKey = TextAttributesKey.createTextAttributesKey("TickScript.VALID_ESCAPE", VALID_STRING_ESCAPE)
+  val TickScript_INVALID_ESCAPE: TextAttributesKey =
+    TextAttributesKey.createTextAttributesKey("TickScript.INVALID_ESCAPE", INVALID_STRING_ESCAPE)
+
+}
+
+private fun fillMap(map: MutableMap<IElementType, TextAttributesKey>, value: TextAttributesKey, vararg types: IElementType) {
+  for (type in types) {
+    map[type] = value
+  }
+}
+
+private fun fillMap(map: MutableMap<IElementType, TextAttributesKey>, keys: TokenSet, value: TextAttributesKey) {
+  fillMap(map, value, *keys.types)
+}
+
+val ourAttributes: MutableMap<IElementType, TextAttributesKey> = HashMap<IElementType, TextAttributesKey>().apply {
+  fillMap(this, Attributes.TickScript_LINE_COMMENT, TickScriptElementTypes.LINE_COMMENT)
+
+  fillMap(this, TokenSets.PARENTHESES, Attributes.TickScript_PARENTHESES)
+  fillMap(this, TokenSets.BRACKETS, Attributes.TickScript_BRACKETS)
+
+  fillMap(this, TokenSets.KEYWORDS, Attributes.TickScript_KEYWORD)
+
+  fillMap(this, Attributes.TickScript_COMMA, TickScriptElementTypes.COMMA)
+  fillMap(this, TokenSets.PIPES, Attributes.TickScript_CHAINS)
+  fillMap(this, TickScriptTokenTypes.ALL_OPERATORS, Attributes.TickScript_OPERATION_SIGN)
+
+  fillMap(this, Attributes.TickScript_NUMBER, TickScriptElementTypes.NUMBER, TickScriptElementTypes.DURATION)
+
+  fillMap(this, Attributes.TickScript_STRING, TickScriptElementTypes.SINGLE_QUOTED_STRING)
+  fillMap(this, Attributes.TickScript_STRING, TickScriptElementTypes.TRIPLE_QUOTED_STRING)
+  fillMap(this, Attributes.TickScript_STRING, TickScriptElementTypes.REGEX_LITERAL)
+
+  fillMap(this, Attributes.TickScript_REFERENCE, TickScriptElementTypes.REFERENCE_STRING)
+
+  fillMap(this, Attributes.TickScript_IDENTIFIER, TickScriptElementTypes.ID)
+
+  fillMap(this, HighlighterColors.BAD_CHARACTER, TokenType.BAD_CHARACTER)
+
+  fillMap(this, Attributes.TickScript_VALID_ESCAPE, StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN)
+  fillMap(
+    this,
+    Attributes.TickScript_INVALID_ESCAPE,
+    StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN,
+    StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN
+  )
 }

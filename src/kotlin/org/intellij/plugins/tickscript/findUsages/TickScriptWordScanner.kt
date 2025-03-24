@@ -1,5 +1,5 @@
 /*
- * Copyright 2000-2017 JetBrains s.r.o.
+ * Copyright 2000-2025 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ import com.intellij.lang.cacheBuilder.DefaultWordsScanner
 import com.intellij.psi.tree.TokenSet
 import org.intellij.plugins.tickscript.TickScriptElementTypes
 import org.intellij.plugins.tickscript.TickScriptLexer
-import org.intellij.plugins.tickscript.TickScriptParserDefinition
+import org.intellij.plugins.tickscript.TokenSets
 
-class TickScriptWordScanner(lexer: TickScriptLexer) : DefaultWordsScanner(lexer, TokenSet.create(TickScriptElementTypes.IDENTIFIER), TickScriptParserDefinition.COMMENTARIES, TickScriptParserDefinition.STRING_LITERALS) {
+class TickScriptWordScanner(lexer: TickScriptLexer) : DefaultWordsScanner(lexer, TokenSet.create(TickScriptElementTypes.IDENTIFIER), TokenSets.COMMENTARIES, TokenSets.STRING_LITERALS) {
   init {
     setMayHaveFileRefsInLiterals(true)
   }

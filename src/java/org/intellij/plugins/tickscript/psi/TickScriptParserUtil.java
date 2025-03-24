@@ -22,11 +22,13 @@ import com.intellij.openapi.util.Key;
 public class TickScriptParserUtil extends GeneratedParserUtilBase {
   private static final Key<Object> KEY = Key.create("inside conditional");
 
+  @SuppressWarnings("SameReturnValue")
   public static boolean push(PsiBuilder builder_, @SuppressWarnings("unused") int i, int i1) {
     builder_.putUserData(KEY, i1);
     return true;
   }
 
+  @SuppressWarnings("SameReturnValue")
   public static boolean pop(PsiBuilder builder_, @SuppressWarnings("unused") int i) {
     builder_.putUserData(KEY, null);
     return true;

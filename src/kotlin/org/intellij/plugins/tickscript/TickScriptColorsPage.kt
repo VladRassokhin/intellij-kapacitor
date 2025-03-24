@@ -1,5 +1,5 @@
 /*
- * Copyright 2000-2017 JetBrains s.r.o.
+ * Copyright 2000-2025 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,30 +28,7 @@ import javax.swing.Icon
 
 class TickScriptColorsPage : ColorSettingsPage, InspectionColorSettingsPage, DisplayPrioritySortable {
 
-  companion object {
-    private val descriptors: Array<out AttributesDescriptor> = arrayOf(
-        AttributesDescriptor("Braces and Operators//Brackets", TickScriptSyntaxHighlighterFactory.TickScript_BRACKETS),
-        AttributesDescriptor("Braces and Operators//Braces", TickScriptSyntaxHighlighterFactory.TickScript_PARENTHESES),
-        AttributesDescriptor("Braces and Operators//Comma", TickScriptSyntaxHighlighterFactory.TickScript_COMMA),
-        AttributesDescriptor("Braces and Operators//Chains", TickScriptSyntaxHighlighterFactory.TickScript_CHAINS),
-        AttributesDescriptor("Braces and Operators//Operation sign", TickScriptSyntaxHighlighterFactory.TickScript_OPERATION_SIGN),
-
-        AttributesDescriptor("Number", TickScriptSyntaxHighlighterFactory.TickScript_NUMBER),
-        AttributesDescriptor("Keyword", TickScriptSyntaxHighlighterFactory.TickScript_KEYWORD),
-        AttributesDescriptor("Identifier", TickScriptSyntaxHighlighterFactory.TickScript_IDENTIFIER),
-
-        AttributesDescriptor("Comments", TickScriptSyntaxHighlighterFactory.TickScript_LINE_COMMENT),
-
-        AttributesDescriptor("String//References", TickScriptSyntaxHighlighterFactory.TickScript_REFERENCE),
-        AttributesDescriptor("String//String text", TickScriptSyntaxHighlighterFactory.TickScript_STRING),
-        AttributesDescriptor("String//Valid escape sequence", TickScriptSyntaxHighlighterFactory.TickScript_VALID_ESCAPE),
-        AttributesDescriptor("String//Invalid escape sequence", TickScriptSyntaxHighlighterFactory.TickScript_INVALID_ESCAPE)
-    )
-    private val additional: Map<String, TextAttributesKey> = mapOf(
-    )
-  }
-
-  override fun getIcon(): Icon? {
+  override fun getIcon(): Icon {
     return Icons.FileTypes.TickScript
   }
 
@@ -96,7 +73,7 @@ alert
 """
   }
 
-  override fun getAdditionalHighlightingTagToDescriptorMap(): Map<String, TextAttributesKey>? {
+  override fun getAdditionalHighlightingTagToDescriptorMap(): Map<String, TextAttributesKey> {
     return additional
   }
 
@@ -112,7 +89,28 @@ alert
     return TickScriptLanguage.displayName
   }
 
-  override fun getPriority(): DisplayPriority? {
+  override fun getPriority(): DisplayPriority {
     return DisplayPriority.LANGUAGE_SETTINGS
   }
 }
+
+private val descriptors: Array<out AttributesDescriptor> = arrayOf(
+  AttributesDescriptor("Braces and Operators//Brackets", Attributes.TickScript_BRACKETS),
+  AttributesDescriptor("Braces and Operators//Braces", Attributes.TickScript_PARENTHESES),
+  AttributesDescriptor("Braces and Operators//Comma", Attributes.TickScript_COMMA),
+  AttributesDescriptor("Braces and Operators//Chains", Attributes.TickScript_CHAINS),
+  AttributesDescriptor("Braces and Operators//Operation sign", Attributes.TickScript_OPERATION_SIGN),
+
+  AttributesDescriptor("Number", Attributes.TickScript_NUMBER),
+  AttributesDescriptor("Keyword", Attributes.TickScript_KEYWORD),
+  AttributesDescriptor("Identifier", Attributes.TickScript_IDENTIFIER),
+
+  AttributesDescriptor("Comments", Attributes.TickScript_LINE_COMMENT),
+
+  AttributesDescriptor("String//References", Attributes.TickScript_REFERENCE),
+  AttributesDescriptor("String//String text", Attributes.TickScript_STRING),
+  AttributesDescriptor("String//Valid escape sequence", Attributes.TickScript_VALID_ESCAPE),
+  AttributesDescriptor("String//Invalid escape sequence", Attributes.TickScript_INVALID_ESCAPE)
+)
+private val additional: Map<String, TextAttributesKey> = mapOf(
+)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2000-2017 JetBrains s.r.o.
+ * Copyright 2000-2025 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,19 +41,19 @@ open class TickScriptParserDefinition : ParserDefinition {
   }
 
   override fun getFileNodeType(): IFileElementType {
-    return FILE
+    return TokenSets.FILE
   }
 
   override fun getWhitespaceTokens(): TokenSet {
-    return WHITE_SPACES
+    return TokenSets.WHITE_SPACES
   }
 
   override fun getCommentTokens(): TokenSet {
-    return COMMENTARIES
+    return TokenSets.COMMENTARIES
   }
 
   override fun getStringLiteralElements(): TokenSet {
-    return STRING_LITERALS
+    return TokenSets.STRING_LITERALS
   }
 
   override fun createElement(node: ASTNode): PsiElement {
@@ -70,27 +70,47 @@ open class TickScriptParserDefinition : ParserDefinition {
   override fun createFile(fileViewProvider: FileViewProvider): PsiFile {
     return TickScriptFileImpl(fileViewProvider, TickScriptLanguage)
   }
+}
 
-  override fun spaceExistanceTypeBetweenTokens(left: ASTNode, right: ASTNode) = ParserDefinition.SpaceRequirements.MAY
 
-  companion object {
-    val WHITE_SPACES: TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
-    val STRING_LITERALS: TokenSet = TokenSet.create(STRING_LITERAL, REGEX_LITERAL, REFERENCE_LITERAL)
-    val IDENTIFYING_LITERALS: TokenSet = TokenSet.orSet(STRING_LITERALS, TokenSet.create(ID))
+object TokenSets {
+  @JvmStatic
+  val WHITE_SPACES: TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
 
-    val FILE: IFileElementType = IFileElementType(TickScriptLanguage)
+  @JvmStatic
+  val STRING_LITERALS: TokenSet = TokenSet.create(STRING_LITERAL, REGEX_LITERAL, REFERENCE_LITERAL)
 
-    val PARENTHESES: TokenSet = TokenSet.create(L_PAREN, R_PAREN)
-    val BRACKETS: TokenSet = TokenSet.create(L_BRACKET, R_BRACKET)
+  @JvmStatic
+  val IDENTIFYING_LITERALS: TokenSet = TokenSet.orSet(STRING_LITERALS, TokenSet.create(ID))
 
-    val CONTAINERS: TokenSet = TokenSet.create(STRING_LIST)
+  @JvmStatic
+  val FILE: IFileElementType = IFileElementType(TickScriptLanguage)
 
-    val BOOLEANS: TokenSet = TokenSet.create(TRUE, FALSE)
-    val KEYWORDS: TokenSet = TokenSet.create(TRUE, FALSE, KW_LAMBDA, KW_VAR)
 
-    val LITERALS: TokenSet = TokenSet.orSet(STRING_LITERALS, BOOLEANS, TokenSet.create(NUMBER_LITERAL, DURATION_LITERAL, STAR_LITERAL))
-    val VALUES: TokenSet = TokenSet.orSet(/*CONTAINERS,*/ LITERALS)
-    val COMMENTARIES: TokenSet = TokenSet.create(/*BLOCK_COMMENT, */LINE_COMMENT)
-    val PIPES: TokenSet = TokenSet.create(DOT, AT, PIPE)
-  }
+  @JvmStatic
+  val PARENTHESES: TokenSet = TokenSet.create(L_PAREN, R_PAREN)
+
+  @JvmStatic
+  val BRACKETS: TokenSet = TokenSet.create(L_BRACKET, R_BRACKET)
+
+  @JvmStatic
+  val CONTAINERS: TokenSet = TokenSet.create(STRING_LIST)
+
+  @JvmStatic
+  val BOOLEANS: TokenSet = TokenSet.create(TRUE, FALSE)
+
+  @JvmStatic
+  val KEYWORDS: TokenSet = TokenSet.create(TRUE, FALSE, KW_LAMBDA, KW_VAR)
+
+  @JvmStatic
+  val LITERALS: TokenSet = TokenSet.orSet(STRING_LITERALS, BOOLEANS, TokenSet.create(NUMBER_LITERAL, DURATION_LITERAL, STAR_LITERAL))
+
+  @JvmStatic
+  val VALUES: TokenSet = TokenSet.orSet(/*CONTAINERS,*/ LITERALS)
+
+  @JvmStatic
+  val COMMENTARIES: TokenSet = TokenSet.create(/*BLOCK_COMMENT, */LINE_COMMENT)
+
+  @JvmStatic
+  val PIPES: TokenSet = TokenSet.create(DOT, AT, PIPE)
 }
