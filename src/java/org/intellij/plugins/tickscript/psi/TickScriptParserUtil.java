@@ -1,5 +1,5 @@
 /*
- * Copyright 2000-2017 JetBrains s.r.o.
+ * Copyright 2000-2025 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,19 @@ import com.intellij.lang.parser.GeneratedParserUtilBase;
 import com.intellij.openapi.util.Key;
 
 public class TickScriptParserUtil extends GeneratedParserUtilBase {
-  public static final Key<Object> KEY = Key.create("inside conditional");
+  private static final Key<Object> KEY = Key.create("inside conditional");
 
-  public static boolean push(PsiBuilder builder_, int i, int i1) {
+  public static boolean push(PsiBuilder builder_, @SuppressWarnings("unused") int i, int i1) {
     builder_.putUserData(KEY, i1);
     return true;
   }
 
-  public static boolean pop(PsiBuilder builder_, int i) {
+  public static boolean pop(PsiBuilder builder_, @SuppressWarnings("unused") int i) {
     builder_.putUserData(KEY, null);
     return true;
   }
 
-  public static boolean peek(PsiBuilder builder_, int i, int i1) {
+  public static boolean peek(PsiBuilder builder_, @SuppressWarnings("unused") int i, @SuppressWarnings("unused") int i1) {
     return builder_.getUserData(KEY) != null;
   }
 }
