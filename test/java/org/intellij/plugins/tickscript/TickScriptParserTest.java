@@ -69,11 +69,11 @@ public class TickScriptParserTest extends ParsingTestCase {
     doCodeTest("var x int\nvar x float");
   }
 
-  public void testSimpleValueDeclarations() throws Exception {
+  public void testSimpleValueDeclarations() {
     doTest();
   }
 
-  public void testValueDeclarations() throws Exception {
+  public void testValueDeclarations() {
     doTest();
   }
 
@@ -95,47 +95,52 @@ public class TickScriptParserTest extends ParsingTestCase {
   }
 
   public void testLeftAssociativeOps1() throws Exception {
-    doCodeTest("global(lambda:\n" +
-        "\t// Test Left-Associative operators\n" +
-        "\t// should parse as ((1+2)-(3*4)/5)\n" +
-        "\t(1 + 2 - 3 * 4 / 5)\n" +
-        ")");
+    doCodeTest("""
+        global(lambda:
+        \t// Test Left-Associative operators
+        \t// should parse as ((1+2)-(3*4)/5)
+        \t(1 + 2 - 3 * 4 / 5)
+        )""");
   }
 
   public void testLeftAssociativeOps2() throws Exception {
-    doCodeTest("global(lambda:\n" +
-        "// If this\n" +
-        "// is less than that\n" +
-        "(1 + 2 - 3 * 4 / 5) \n" +
-        "< (sin(6))\n" +
-        "AND \n" +
-        "// more comments.\n" +
-        "(TRUE OR FALSE))");
+    doCodeTest("""
+        global(lambda:
+        // If this
+        // is less than that
+        (1 + 2 - 3 * 4 / 5)\s
+        < (sin(6))
+        AND\s
+        // more comments.
+        (TRUE OR FALSE))""");
   }
 
   public void testStream() throws Exception {
-    doCodeTest("var x = stream\n" +
-        "  |window()\n" +
-        "  .period(5m)\n" +
-        "  .every(60s)\n" +
-        "  |map(influxql.agg.mean('value'))");
+    doCodeTest("""
+        var x = stream
+          |window()
+          .period(5m)
+          .every(60s)
+          |map(influxql.agg.mean('value'))""");
   }
 
   public void testStreamDynFunc() throws Exception {
-    doCodeTest("var x = stream\n" +
-        "\t\t@dynamicFunc()\n" +
-        "\t\t\t.property(5m)");
+    doCodeTest("""
+        var x = stream
+        \t\t@dynamicFunc()
+        \t\t\t.property(5m)""");
   }
 
   public void testPipes() throws Exception {
     doCodeTest(
-        "stream\n" +
-            "  |a().b()\n" +
-            "  |c().d()\n" +
-            "  |e().f('mydb')");
+        """
+            stream
+              |a().b()
+              |c().d()
+              |e().f('mydb')""");
   }
 
-  public void testComplexExample() throws Exception {
+  public void testComplexExample() {
     doTest();
   }
 
