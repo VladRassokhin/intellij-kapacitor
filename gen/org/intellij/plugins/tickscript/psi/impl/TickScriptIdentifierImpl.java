@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptIdentifierImpl extends TickScriptIdentifierMixin implements TickScriptIdentifier {
 
-  public TickScriptIdentifierImpl(ASTNode node) {
+  public TickScriptIdentifierImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitIdentifier(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

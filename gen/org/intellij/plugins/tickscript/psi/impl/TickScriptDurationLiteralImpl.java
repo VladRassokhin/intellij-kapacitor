@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptDurationLiteralImpl extends TickScriptLiteralImpl implements TickScriptDurationLiteral {
 
-  public TickScriptDurationLiteralImpl(ASTNode node) {
+  public TickScriptDurationLiteralImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitDurationLiteral(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

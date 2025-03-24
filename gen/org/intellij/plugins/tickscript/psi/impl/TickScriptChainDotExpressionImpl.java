@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptChainDotExpressionImpl extends TickScriptChainExpressionImpl implements TickScriptChainDotExpression {
 
-  public TickScriptChainDotExpressionImpl(ASTNode node) {
+  public TickScriptChainDotExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitChainDotExpression(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

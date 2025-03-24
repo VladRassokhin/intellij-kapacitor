@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptBinaryAdditionExpressionImpl extends TickScriptBinaryExpressionImpl implements TickScriptBinaryAdditionExpression {
 
-  public TickScriptBinaryAdditionExpressionImpl(ASTNode node) {
+  public TickScriptBinaryAdditionExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitBinaryAdditionExpression(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

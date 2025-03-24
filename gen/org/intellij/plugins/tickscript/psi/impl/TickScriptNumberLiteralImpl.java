@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptNumberLiteralImpl extends TickScriptLiteralImpl implements TickScriptNumberLiteral {
 
-  public TickScriptNumberLiteralImpl(ASTNode node) {
+  public TickScriptNumberLiteralImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitNumberLiteral(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

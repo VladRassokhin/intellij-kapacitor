@@ -77,7 +77,7 @@ public interface TickScriptElementTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-       if (type == BINARY_ADDITION_EXPRESSION) {
+      if (type == BINARY_ADDITION_EXPRESSION) {
         return new TickScriptBinaryAdditionExpressionImpl(node);
       }
       else if (type == BINARY_AND_EXPRESSION) {

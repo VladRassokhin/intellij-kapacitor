@@ -14,7 +14,6 @@ public interface TickScriptBinaryExpression extends TickScriptExpression {
   @Nullable
   TickScriptExpression getROperand();
 
-  @NotNull
-  IElementType getOperationSign();
+  @NotNull IElementType getOperationSign();
 
 }

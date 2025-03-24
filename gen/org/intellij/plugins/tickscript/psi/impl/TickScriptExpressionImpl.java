@@ -13,7 +13,7 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public abstract class TickScriptExpressionImpl extends ASTWrapperPsiElement implements TickScriptExpression {
 
-  public TickScriptExpressionImpl(ASTNode node) {
+  public TickScriptExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
@@ -21,6 +21,7 @@ public abstract class TickScriptExpressionImpl extends ASTWrapperPsiElement impl
     visitor.visitExpression(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

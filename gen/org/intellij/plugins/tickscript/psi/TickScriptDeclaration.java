@@ -10,7 +10,6 @@ public interface TickScriptDeclaration extends PsiElement {
   @Nullable
   TickScriptExpression getValue();
 
-  @NotNull
-  TickScriptIdentifier getVariable();
+  @NotNull TickScriptIdentifier getVariable();
 
 }

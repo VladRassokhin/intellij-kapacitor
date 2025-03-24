@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptBinaryOrExpressionImpl extends TickScriptBinaryExpressionImpl implements TickScriptBinaryOrExpression {
 
-  public TickScriptBinaryOrExpressionImpl(ASTNode node) {
+  public TickScriptBinaryOrExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitBinaryOrExpression(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

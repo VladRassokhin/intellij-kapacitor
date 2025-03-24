@@ -23,46 +23,15 @@ public class TickScriptParser implements PsiParser, LightPsiParser {
     boolean r;
     b = adapt_builder_(t, b, this, EXTENDS_SETS_);
     Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-    if (t == PARAMETER_LIST) {
-      r = ParameterList(b, 0);
-    }
-    else if (t == BOOLEAN_LITERAL) {
-      r = boolean_literal(b, 0);
-    }
-    else if (t == DECLARATION) {
-      r = declaration(b, 0);
-    }
-    else if (t == DURATION_LITERAL) {
-      r = duration_literal(b, 0);
-    }
-    else if (t == EXPRESSION) {
-      r = expression(b, 0, -1);
-    }
-    else if (t == NUMBER_LITERAL) {
-      r = number_literal(b, 0);
-    }
-    else if (t == REFERENCE_LITERAL) {
-      r = reference_literal(b, 0);
-    }
-    else if (t == REGEX_LITERAL) {
-      r = regex_literal(b, 0);
-    }
-    else if (t == STAR_LITERAL) {
-      r = star_literal(b, 0);
-    }
-    else if (t == STRING_LITERAL) {
-      r = string_literal(b, 0);
-    }
-    else if (t == TYPE_DECLARATION) {
-      r = type_declaration(b, 0);
-    }
-    else {
-      r = parse_root_(t, b, 0);
-    }
+    r = parse_root_(t, b);
     exit_section_(b, 0, m, t, r, true, TRUE_CONDITION);
   }
 
-  protected boolean parse_root_(IElementType t, PsiBuilder b, int l) {
+  protected boolean parse_root_(IElementType t, PsiBuilder b) {
+    return parse_root_(t, b, 0);
+  }
+
+  static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
     return program(b, l + 1);
   }
 
@@ -119,11 +88,10 @@ public class TickScriptParser implements PsiParser, LightPsiParser {
   // (',' expression )*
   private static boolean ParameterList_1_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ParameterList_1_0_1")) return false;
-    int c = current_position_(b);
     while (true) {
+      int c = current_position_(b);
       if (!ParameterList_1_0_1_0(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "ParameterList_1_0_1", c)) break;
-      c = current_position_(b);
     }
     return true;
   }
@@ -149,7 +117,7 @@ public class TickScriptParser implements PsiParser, LightPsiParser {
     r = StringListItem_0(b, l + 1);
     p = r; // pin = 1
     r = r && StringListItem_1(b, l + 1);
-    exit_section_(b, l, m, r, p, not_bracket_or_next_value_parser_);
+    exit_section_(b, l, m, r, p, TickScriptParser::not_bracket_or_next_value);
     return r || p;
   }
 
@@ -157,11 +125,9 @@ public class TickScriptParser implements PsiParser, LightPsiParser {
   private static boolean StringListItem_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StringListItem_0")) return false;
     boolean r;
-    Marker m = enter_section_(b);
     r = string_literal(b, l + 1);
     if (!r) r = identifier(b, l + 1);
     if (!r) r = star_literal(b, l + 1);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -202,7 +168,13 @@ public class TickScriptParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // OP_And
   static boolean andOp(PsiBuilder b, int l) {
-    return consumeToken(b, OP_AND);
+    if (!recursion_guard_(b, l, "andOp")) return false;
+    if (!nextTokenIs(b, "<operator>", OP_AND)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, null, "<operator>");
+    r = consumeToken(b, OP_AND);
+    exit_section_(b, l, m, r, false, null);
+    return r;
   }
 
   /* ********************************************************** */
@@ -298,11 +270,9 @@ public class TickScriptParser implements PsiParser, LightPsiParser {
   private static boolean not_bracket_or_next_value_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "not_bracket_or_next_value_0_1")) return false;
     boolean r;
-    Marker m = enter_section_(b);
     r = string_literal(b, l + 1);
     if (!r) r = identifier(b, l + 1);
     if (!r) r = star_literal(b, l + 1);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -321,18 +291,23 @@ public class TickScriptParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // OP_Or
   static boolean orOp(PsiBuilder b, int l) {
-    return consumeToken(b, OP_OR);
+    if (!recursion_guard_(b, l, "orOp")) return false;
+    if (!nextTokenIs(b, "<operator>", OP_OR)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, null, "<operator>");
+    r = consumeToken(b, OP_OR);
+    exit_section_(b, l, m, r, false, null);
+    return r;
   }
 
   /* ********************************************************** */
   // statement*
   static boolean program(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "program")) return false;
-    int c = current_position_(b);
     while (true) {
+      int c = current_position_(b);
       if (!statement(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "program", c)) break;
-      c = current_position_(b);
     }
     return true;
   }
@@ -392,11 +367,9 @@ public class TickScriptParser implements PsiParser, LightPsiParser {
   static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
     boolean r;
-    Marker m = enter_section_(b);
     r = type_declaration(b, l + 1);
     if (!r) r = declaration(b, l + 1);
     if (!r) r = expression(b, l + 1, -1);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -630,18 +603,12 @@ public class TickScriptParser implements PsiParser, LightPsiParser {
   // StringListItem*
   private static boolean StringList_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StringList_1")) return false;
-    int c = current_position_(b);
     while (true) {
+      int c = current_position_(b);
       if (!StringListItem(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "StringList_1", c)) break;
-      c = current_position_(b);
     }
     return true;
   }
 
-  final static Parser not_bracket_or_next_value_parser_ = new Parser() {
-    public boolean parse(PsiBuilder b, int l) {
-      return not_bracket_or_next_value(b, l + 1);
-    }
-  };
 }

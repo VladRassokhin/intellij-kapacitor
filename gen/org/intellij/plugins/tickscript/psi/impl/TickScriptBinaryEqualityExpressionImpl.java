@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptBinaryEqualityExpressionImpl extends TickScriptBinaryExpressionImpl implements TickScriptBinaryEqualityExpression {
 
-  public TickScriptBinaryEqualityExpressionImpl(ASTNode node) {
+  public TickScriptBinaryEqualityExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitBinaryEqualityExpression(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

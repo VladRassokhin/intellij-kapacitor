@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptBinaryMultiplyExpressionImpl extends TickScriptBinaryExpressionImpl implements TickScriptBinaryMultiplyExpression {
 
-  public TickScriptBinaryMultiplyExpressionImpl(ASTNode node) {
+  public TickScriptBinaryMultiplyExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitBinaryMultiplyExpression(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

@@ -13,14 +13,16 @@ import com.intellij.psi.tree.IElementType;
 
 public class TickScriptBinaryExpressionImpl extends BinaryExpressionMixin implements TickScriptBinaryExpression {
 
-  public TickScriptBinaryExpressionImpl(ASTNode node) {
+  public TickScriptBinaryExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitBinaryExpression(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);
@@ -40,8 +42,8 @@ public class TickScriptBinaryExpressionImpl extends BinaryExpressionMixin implem
     return p1.size() < 2 ? null : p1.get(1);
   }
 
-  @NotNull
-  public IElementType getOperationSign() {
+  @Override
+  public @NotNull IElementType getOperationSign() {
     return TickScriptPsiImplUtilJ.getOperationSign(this);
   }
 

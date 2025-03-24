@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptBooleanLiteralImpl extends TickScriptLiteralImpl implements TickScriptBooleanLiteral {
 
-  public TickScriptBooleanLiteralImpl(ASTNode node) {
+  public TickScriptBooleanLiteralImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitBooleanLiteral(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptChainPipeExpressionImpl extends TickScriptChainExpressionImpl implements TickScriptChainPipeExpression {
 
-  public TickScriptChainPipeExpressionImpl(ASTNode node) {
+  public TickScriptChainPipeExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitChainPipeExpression(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

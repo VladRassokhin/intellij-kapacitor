@@ -13,7 +13,7 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptParameterListImpl extends ASTWrapperPsiElement implements TickScriptParameterList {
 
-  public TickScriptParameterListImpl(ASTNode node) {
+  public TickScriptParameterListImpl(@NotNull ASTNode node) {
     super(node);
   }
 
@@ -21,6 +21,7 @@ public class TickScriptParameterListImpl extends ASTWrapperPsiElement implements
     visitor.visitParameterList(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

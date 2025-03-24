@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptBinaryRelationalExpressionImpl extends TickScriptBinaryExpressionImpl implements TickScriptBinaryRelationalExpression {
 
-  public TickScriptBinaryRelationalExpressionImpl(ASTNode node) {
+  public TickScriptBinaryRelationalExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitBinaryRelationalExpression(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

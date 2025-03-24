@@ -13,7 +13,7 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptDeclarationImpl extends ASTWrapperPsiElement implements TickScriptDeclaration {
 
-  public TickScriptDeclarationImpl(ASTNode node) {
+  public TickScriptDeclarationImpl(@NotNull ASTNode node) {
     super(node);
   }
 
@@ -21,6 +21,7 @@ public class TickScriptDeclarationImpl extends ASTWrapperPsiElement implements T
     visitor.visitDeclaration(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);
@@ -33,8 +34,8 @@ public class TickScriptDeclarationImpl extends ASTWrapperPsiElement implements T
     return p1.size() < 2 ? null : p1.get(1);
   }
 
-  @NotNull
-  public TickScriptIdentifier getVariable() {
+  @Override
+  public @NotNull TickScriptIdentifier getVariable() {
     return TickScriptPsiImplUtilJ.getVariable(this);
   }
 

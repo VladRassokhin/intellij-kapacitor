@@ -13,7 +13,7 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptTypeDeclarationImpl extends ASTWrapperPsiElement implements TickScriptTypeDeclaration {
 
-  public TickScriptTypeDeclarationImpl(ASTNode node) {
+  public TickScriptTypeDeclarationImpl(@NotNull ASTNode node) {
     super(node);
   }
 
@@ -21,6 +21,7 @@ public class TickScriptTypeDeclarationImpl extends ASTWrapperPsiElement implemen
     visitor.visitTypeDeclaration(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);

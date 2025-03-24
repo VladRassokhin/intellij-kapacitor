@@ -12,14 +12,16 @@ import org.intellij.plugins.tickscript.psi.*;
 
 public class TickScriptParenthesizedExpressionImpl extends TickScriptExpressionImpl implements TickScriptParenthesizedExpression {
 
-  public TickScriptParenthesizedExpressionImpl(ASTNode node) {
+  public TickScriptParenthesizedExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull TickScriptElementVisitor visitor) {
     visitor.visitParenthesizedExpression(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof TickScriptElementVisitor) accept((TickScriptElementVisitor)visitor);
     else super.accept(visitor);
